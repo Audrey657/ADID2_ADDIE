@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Activité 3 — Verbatims à annoter</title>
+  <style>
+    :root {
+      --bg: #f7f1ea;
+      --bg-soft: #fcf8f4;
+      --card: rgba(255, 252, 248, 0.95);
+      --text: #2f2a26;
+      --muted: #74685f;
+      --line: #e8d9cc;
+      --primary: #b8614b;
+      --primary-dark: #8f4636;
+      --accent: #d89f54;
+      --sage: #93a28b;
+      --blue: #7d9fb5;
+      --ok: #3f7a54;
+      --warn: #b17626;
+      --bad: #a34c42;
+      --stress-bg: rgba(216,159,84,0.22);
+      --stress-border: rgba(216,159,84,0.55);
+      --pressure-bg: rgba(184,97,75,0.16);
+      --pressure-border: rgba(184,97,75,0.45);
+      --shadow: 0 14px 34px rgba(104, 70, 49, 0.12);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(216,159,84,0.18), transparent 25%),
+        radial-gradient(circle at top right, rgba(184,97,75,0.14), transparent 26%),
+        linear-gradient(180deg, #fbf6f0 0%, var(--bg) 100%);
+    }
+
+    body { padding: 28px; }
+
+    .shell {
+      max-width: 1360px;
+      margin: 0 auto;
+      display: grid;
+      gap: 22px;
+    }
+
+    .hero,
+    .exercise-card,
+    .toolbar-card,
+    .workspace,
+    .result-card {
+      background: var(--card);
+      border: 1px solid rgba(232,217,204,0.92);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero {
+      padding: 28px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -34px;
+      top: -34px;
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(216,159,84,0.22), rgba(216,159,84,0));
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(184,97,75,0.1);
+      color: var(--primary-dark);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    h1 {
+      margin: 16px 0 10px;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      line-height: 1.08;
+    }
+
+    .hero p,
+    .meta,
+    .hint,
+    .note,
+    .result-text,
+    .legend small {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .chip,
+    .pill {
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--bg-soft);
+      font-size: 0.94rem;
+    }
+
+    .side-panel {
+      display: grid;
+      gap: 16px;
+      align-content: start;
+    }
+
+    .info-box,
+    .score-box,
+    .mini-card,
+    .verbatim-card,
+    .sidebar-card {
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.76), rgba(250,244,238,0.9));
+    }
+
+    .info-box strong,
+    .score-box strong,
+    .mini-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .progress-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      font-size: 0.96rem;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      background: #efe3d7;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transition: width 0.3s ease;
+    }
+
+    .exercise-card,
+    .toolbar-card,
+    .workspace,
+    .result-card { padding: 24px; }
+
+    .exercise-head,
+    .toolbar-head,
+    .result-title,
+    .verbatim-head,
+    .sidebar-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .exercise-head h2,
+    .toolbar-head h2,
+    .result-card h2,
+    .workspace h2,
+    .verbatim-head h2 {
+      margin: 0;
+      font-size: 1.3rem;
+    }
+
+    .exercise-nav,
+    .actions,
+    .mode-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: 1px solid var(--line);
+      background: #fffdfa;
+      color: var(--text);
+      border-radius: 999px;
+      padding: 12px 16px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button:disabled { opacity: 0.55; cursor: default; transform: none; }
+
+    .mode-btn.active[data-mode="stress"] {
+      background: var(--stress-bg);
+      border-color: var(--stress-border);
+    }
+
+    .mode-btn.active[data-mode="pressure"] {
+      background: var(--pressure-bg);
+      border-color: var(--pressure-border);
+    }
+
+    .primary {
+      background: linear-gradient(135deg, var(--primary), #c97a5f);
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 10px 22px rgba(184,97,75,0.24);
+    }
+
+    .secondary {
+      background: rgba(147,162,139,0.12);
+      border-color: rgba(147,162,139,0.24);
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .transcript {
+      display: grid;
+      gap: 12px;
+    }
+
+    .turn {
+      display: grid;
+      gap: 8px;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(232,217,204,0.92);
+      background: rgba(255,255,255,0.72);
+    }
+
+    .turn.narration {
+      background: linear-gradient(180deg, rgba(147,162,139,0.08), rgba(255,255,255,0.72));
+    }
+
+    .speaker {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--primary-dark);
+    }
+
+    .segments {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .segment {
+      display: inline-block;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 5px 7px;
+      line-height: 1.6;
+      cursor: pointer;
+      transition: background 0.18s ease, border-color 0.18s ease, transform 0.16s ease;
+    }
+
+    .segment:hover {
+      transform: translateY(-1px);
+      border-color: rgba(141,119,99,0.18);
+      background: rgba(255,255,255,0.85);
+    }
+
+    .segment.selected-stress {
+      background: var(--stress-bg);
+      border-color: var(--stress-border);
+      box-shadow: inset 0 -1px 0 rgba(216,159,84,0.4);
+    }
+
+    .segment.selected-pressure {
+      background: var(--pressure-bg);
+      border-color: var(--pressure-border);
+      box-shadow: inset 0 -1px 0 rgba(184,97,75,0.34);
+    }
+
+    .segment.correct-stress {
+      outline: 2px solid rgba(216,159,84,0.42);
+      outline-offset: 1px;
+    }
+
+    .segment.correct-pressure {
+      outline: 2px solid rgba(184,97,75,0.35);
+      outline-offset: 1px;
+    }
+
+    .segment.missed {
+      box-shadow: inset 0 0 0 2px rgba(163,76,66,0.18);
+    }
+
+    .segment.disabled { cursor: default; }
+
+    .sidebar-grid,
+    .legend,
+    .feedback-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .legend-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .legend-swatch {
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      margin-top: 2px;
+      border: 1px solid var(--line);
+      flex-shrink: 0;
+    }
+
+    .legend-swatch.stress { background: var(--stress-bg); border-color: var(--stress-border); }
+    .legend-swatch.pressure { background: var(--pressure-bg); border-color: var(--pressure-border); }
+
+    .count-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .count-box {
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+    }
+
+    .count-box strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 1.1rem;
+    }
+
+    .badge {
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+    }
+
+    .badge.success {
+      color: var(--ok);
+      border-color: rgba(63,122,84,0.26);
+      background: rgba(63,122,84,0.08);
+    }
+
+    .badge.warning {
+      color: var(--warn);
+      border-color: rgba(177,118,38,0.28);
+      background: rgba(177,118,38,0.08);
+    }
+
+    .feedback-item {
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.76);
+    }
+
+    .feedback-item strong {
+      display: inline-block;
+      margin-right: 6px;
+    }
+
+    @media (max-width: 1080px) {
+      .hero,
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      body { padding: 16px; }
+      .hero,
+      .exercise-card,
+      .toolbar-card,
+      .workspace,
+      .result-card { padding: 18px; }
+      .actions,
+      .mode-row,
+      .exercise-nav { flex-direction: column; }
+      button { width: 100%; }
+      .count-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Activité 3 · série de verbatims</div>
+        <h1>Repérer les indices de stress dans plusieurs situations</h1>
+        <p>
+          Les exercices se succèdent avec le même fonctionnement. Certains cas sont présentés sous forme de dialogues,
+          d’autres sous forme de narration. Pour chaque cas, surlignez les passages qui signalent un stress probable chez l’élève,
+          puis les formulations enseignantes ou contextuelles qui peuvent augmenter la pression émotionnelle.
+        </p>
+        <div class="chips">
+          <span class="chip">Dialogues et narrations</span>
+          <span class="chip">Travail individuel</span>
+          <span class="chip">Même correction pour chaque cas</span>
+          <span class="chip">Critère : 4 passages pertinents</span>
+        </div>
+      </div>
+
+      <aside class="side-panel">
+        <div class="info-box">
+          <strong>Consigne</strong>
+          Surlignez les passages qui signalent un stress probable chez l’élève et les formulations susceptibles d’augmenter la pression émotionnelle.
+        </div>
+        <div class="score-box">
+          <div class="progress-line">
+            <span>Progression de l’exercice en cours</span>
+            <strong id="progressText">0 sélection</strong>
+          </div>
+          <div class="progress-track" aria-hidden="true">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
+          <p class="meta" style="margin: 12px 0 0;">Le critère attendu reste identique pour chaque cas : 4 passages pertinents, dont au moins 2 venant de l’élève.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="exercise-card">
+      <div class="exercise-head">
+        <div>
+          <h2 id="exerciseTitle">Exercice 1</h2>
+          <div class="meta" id="exerciseMeta">Dialogue</div>
+        </div>
+        <div class="exercise-nav">
+          <span class="pill" id="exerciseCounter">Exercice 1 / 4</span>
+          <button id="prevExerciseBtn" type="button">Exercice précédent</button>
+          <button id="nextExerciseBtn" type="button">Exercice suivant</button>
+        </div>
+      </div>
+      <div class="meta" id="exerciseDescription"></div>
+    </section>
+
+    <section class="toolbar-card">
+      <div class="toolbar-head">
+        <div>
+          <h2>Outils de surlignage</h2>
+          <div class="meta">Le fonctionnement reste le même d’un exercice à l’autre.</div>
+        </div>
+        <div class="pill" id="modeLabel">Mode actuel : aucun</div>
+      </div>
+
+      <div class="mode-row">
+        <button class="mode-btn" type="button" data-mode="stress">Stress probable chez l’élève</button>
+        <button class="mode-btn" type="button" data-mode="pressure">Formulation stressante</button>
+        <button class="mode-btn" type="button" data-mode="erase">Effacer une annotation</button>
+      </div>
+
+      <div class="actions">
+        <button class="primary" id="validateBtn" type="button">Valider mes réponses</button>
+        <button id="showCorrectionBtn" type="button">Afficher la correction</button>
+        <button class="secondary" id="resetBtn" type="button">Réinitialiser cet exercice</button>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <article class="verbatim-card">
+        <div class="verbatim-head">
+          <div>
+            <h2>Texte à annoter</h2>
+            <div class="meta">Le cas change automatiquement quand vous passez à l’exercice suivant.</div>
+          </div>
+          <div class="pill" id="caseTypePill">Dialogue</div>
+        </div>
+
+        <div class="transcript" id="transcript"></div>
+      </article>
+
+      <aside class="sidebar-card">
+        <div class="sidebar-head">
+          <div>
+            <h2>Repères de lecture</h2>
+            <div class="meta">Deux types de passages sont à identifier dans chaque cas.</div>
+          </div>
+        </div>
+
+        <div class="sidebar-grid">
+          <div class="mini-card legend">
+            <div class="legend-item">
+              <span class="legend-swatch stress"></span>
+              <div>
+                <strong>Stress probable chez l’élève</strong>
+                <small>Paroles, hésitations, demandes, manifestations somatiques ou formulations qui laissent penser à une tension émotionnelle.</small>
+              </div>
+            </div>
+            <div class="legend-item">
+              <span class="legend-swatch pressure"></span>
+              <div>
+                <strong>Pression émotionnelle</strong>
+                <small>Formulations de l’enseignant, du groupe ou du contexte qui augmentent l’urgence, la comparaison, la menace d’échec ou l’exposition sociale.</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="mini-card">
+            <strong>Suivi de vos sélections</strong>
+            <div class="count-grid">
+              <div class="count-box">
+                <strong id="stressCount">0</strong>
+                <div class="hint">Passages repérés chez l’élève</div>
+              </div>
+              <div class="count-box">
+                <strong id="pressureCount">0</strong>
+                <div class="hint">Formulations stressantes repérées</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mini-card">
+            <strong>Conseil</strong>
+            <div class="hint" id="adviceText">Commencez par lire l’ensemble du cas avant de sélectionner seulement les passages les plus défendables.</div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="result-card">
+      <div class="result-title">
+        <h2>Résultat et corrigé commenté</h2>
+        <div class="badge" id="resultBadge">En attente de validation</div>
+      </div>
+
+      <div class="result-text" id="resultText">
+        Annotez le texte, puis cliquez sur « Valider mes réponses » pour comparer vos choix avec le corrigé.
+      </div>
+
+      <div class="feedback-list" id="feedbackList"></div>
+      <div class="note" id="resultNote"></div>
+    </section>
+  </main>
+
+  <script>
+    const exercises = [
+      {
+        id: 'ex1',
+        title: 'Exercice 1 — Lecture à voix haute',
+        type: 'Dialogue',
+        description: 'Identifier les signes verbaux de tension chez l’élève et les formulations enseignantes qui augmentent la pression lors d’un passage oral.',
+        transcript: [
+          { speaker: 'Enseignante', segments: [
+            { id: 'ex1_s1', text: 'Bon, on se dépêche,' },
+            { id: 'ex1_s2', text: 'dans une minute tu lis ton texte devant toute la classe.' }
+          ]},
+          { speaker: 'Élève', segments: [
+            { id: 'ex1_s3', text: 'Je... je ne suis pas prêt.' },
+            { id: 'ex1_s4', text: 'J’ai peur de me tromper.' }
+          ]},
+          { speaker: 'Enseignante', segments: [
+            { id: 'ex1_s5', text: 'Tu as déjà eu assez de temps.' },
+            { id: 'ex1_s6', text: 'Les autres y arrivent bien, toi aussi.' }
+          ]},
+          { speaker: 'Élève', segments: [
+            { id: 'ex1_s7', text: 'Je ne comprends plus trop.' },
+            { id: 'ex1_s8', text: 'Est-ce que je peux passer après ?' }
+          ]},
+          { speaker: 'Enseignante', segments: [
+            { id: 'ex1_s9', text: 'Non, maintenant.' },
+            { id: 'ex1_s10', text: 'Sinon tu vas encore retarder tout le groupe.' }
+          ]},
+          { speaker: 'Élève', segments: [
+            { id: 'ex1_s11', text: 'D’accord...' },
+            { id: 'ex1_s12', text: 'mais j’ai mal au ventre.' }
+          ]}
+        ],
+        correction: {
+          stress: ['ex1_s3', 'ex1_s4', 'ex1_s7', 'ex1_s8', 'ex1_s12'],
+          pressure: ['ex1_s1', 'ex1_s2', 'ex1_s5', 'ex1_s6', 'ex1_s9', 'ex1_s10']
+        },
+        comments: {
+          ex1_s3: 'L’hésitation et le fait de dire ne pas être prêt peuvent signaler une tension ou une insécurité.',
+          ex1_s4: 'L’élève verbalise explicitement une crainte de l’échec.',
+          ex1_s7: 'Cette formulation peut indiquer une surcharge ou une désorganisation sous pression.',
+          ex1_s8: 'La demande de différer le passage peut être un indice défendable d’évitement lié au stress.',
+          ex1_s12: 'Le mal au ventre peut être un signe somatique associé à une tension émotionnelle.',
+          ex1_s1: 'La formulation crée un climat d’urgence qui peut augmenter la pression ressentie.',
+          ex1_s2: 'L’annonce du passage immédiat devant la classe accentue l’exposition sociale.',
+          ex1_s5: 'Cette phrase peut être vécue comme peu contenante et augmenter la tension.',
+          ex1_s6: 'La comparaison avec les autres peut renforcer la pression de performance.',
+          ex1_s9: 'Le refus abrupt laisse peu d’espace de régulation à l’élève.',
+          ex1_s10: 'La référence au groupe ajoute une pression sociale supplémentaire.'
+        }
+      },
+      {
+        id: 'ex2',
+        title: 'Exercice 2 — Évaluation écrite',
+        type: 'Narration',
+        description: 'Repérer, dans une narration de classe, les éléments signalant le stress d’un élève et ceux qui intensifient la pression liée à la tâche.',
+        transcript: [
+          { speaker: 'Narration', narration: true, segments: [
+            { id: 'ex2_s1', text: 'En début d’évaluation, l’enseignant annonce qu’il ne restera pas une minute de plus à la fin.' },
+            { id: 'ex2_s2', text: 'Il précise aussi que les copies incomplètes seront notées comme telles.' }
+          ]},
+          { speaker: 'Narration', narration: true, segments: [
+            { id: 'ex2_s3', text: 'Au troisième exercice, Léo relit plusieurs fois la consigne sans écrire.' },
+            { id: 'ex2_s4', text: 'Il souffle, serre très fort son stylo et demande s’il peut recommencer depuis le début.' }
+          ]},
+          { speaker: 'Narration', narration: true, segments: [
+            { id: 'ex2_s5', text: 'L’enseignant répond à voix haute que ce n’est pourtant pas difficile.' },
+            { id: 'ex2_s6', text: 'Il ajoute que les élèves qui ont bien révisé ont déjà presque terminé.' }
+          ]},
+          { speaker: 'Narration', narration: true, segments: [
+            { id: 'ex2_s7', text: 'Léo baisse la tête, efface plusieurs fois la même ligne et dit qu’il ne sait plus comment commencer.' },
+            { id: 'ex2_s8', text: 'Quelques minutes plus tard, il demande s’il peut aller boire un verre d’eau.' }
+          ]}
+        ],
+        correction: {
+          stress: ['ex2_s3', 'ex2_s4', 'ex2_s7', 'ex2_s8'],
+          pressure: ['ex2_s1', 'ex2_s2', 'ex2_s5', 'ex2_s6']
+        },
+        comments: {
+          ex2_s1: 'La limite de temps annoncée de façon ferme peut accroître la pression.',
+          ex2_s2: 'La menace de sanction sur les copies incomplètes renforce la tension de performance.',
+          ex2_s3: 'La relecture répétée sans passage à l’écriture peut signaler un blocage sous stress.',
+          ex2_s4: 'Les manifestations corporelles et la demande de recommencer vont dans le sens d’une tension élevée.',
+          ex2_s5: 'Cette réponse minimise la difficulté ressentie et peut augmenter la pression émotionnelle.',
+          ex2_s6: 'La comparaison implicite avec les autres élèves ajoute une pression sociale.',
+          ex2_s7: 'L’effacement répété et la verbalisation d’un désarroi constituent des indices pertinents.',
+          ex2_s8: 'La demande de s’éloigner brièvement peut être un indice d’évitement ou de besoin de régulation.'
+        }
+      },
+      {
+        id: 'ex3',
+        title: 'Exercice 3 — Travail de groupe',
+        type: 'Dialogue',
+        description: 'Distinguer ce qui relève du stress de l’élève et ce qui, dans le discours de l’adulte, accentue la pression dans un contexte collectif.',
+        transcript: [
+          { speaker: 'Enseignant', segments: [
+            { id: 'ex3_s1', text: 'Votre groupe passe en premier,' },
+            { id: 'ex3_s2', text: 'j’attends quelque chose de clair et sans hésitation.' }
+          ]},
+          { speaker: 'Élève', segments: [
+            { id: 'ex3_s3', text: 'Je préfère peut-être laisser Emma parler au début.' },
+            { id: 'ex3_s4', text: 'Je sens que je vais tout mélanger.' }
+          ]},
+          { speaker: 'Enseignant', segments: [
+            { id: 'ex3_s5', text: 'Non, tu dois prendre ta part comme les autres.' },
+            { id: 'ex3_s6', text: 'Ce n’est pas le moment d’avoir peur.' }
+          ]},
+          { speaker: 'Élève', segments: [
+            { id: 'ex3_s7', text: 'Mon cœur bat très vite.' },
+            { id: 'ex3_s8', text: 'Est-ce qu’on peut répéter encore une fois ?' }
+          ]},
+          { speaker: 'Enseignant', segments: [
+            { id: 'ex3_s9', text: 'On n’a plus le temps.' },
+            { id: 'ex3_s10', text: 'Tout le monde vous regarde déjà.' }
+          ]}
+        ],
+        correction: {
+          stress: ['ex3_s3', 'ex3_s4', 'ex3_s7', 'ex3_s8'],
+          pressure: ['ex3_s1', 'ex3_s2', 'ex3_s5', 'ex3_s6', 'ex3_s9', 'ex3_s10']
+        },
+        comments: {
+          ex3_s1: 'Le passage en premier peut créer une pression supplémentaire.',
+          ex3_s2: 'L’exigence formulée sur un mode normatif augmente l’enjeu perçu.',
+          ex3_s3: 'Le souhait de laisser un autre élève commencer peut signaler une tension.',
+          ex3_s4: 'L’élève anticipe un échec ou une désorganisation.',
+          ex3_s5: 'La formulation injonctive laisse peu d’espace d’ajustement.',
+          ex3_s6: 'Minimiser la peur exprimée peut accroître la pression ressentie.',
+          ex3_s7: 'La verbalisation d’un signe physiologique constitue un indice solide.',
+          ex3_s8: 'La demande de répétition peut signaler un besoin de régulation ou de sécurisation.',
+          ex3_s9: 'L’urgence temporelle peut faire monter la pression émotionnelle.',
+          ex3_s10: 'La mise en avant du regard du groupe accentue l’exposition sociale.'
+        }
+      },
+      {
+        id: 'ex4',
+        title: 'Exercice 4 — Consigne modifiée au dernier moment',
+        type: 'Narration',
+        description: 'Analyser une scène racontée pour repérer des indices de surcharge et des éléments contextuels ou verbaux qui intensifient la pression.',
+        transcript: [
+          { speaker: 'Narration', narration: true, segments: [
+            { id: 'ex4_s1', text: 'Alors que les élèves pensent avoir terminé leur affiche, l’enseignante annonce qu’il faut tout reprendre sous une autre forme.' },
+            { id: 'ex4_s2', text: 'Elle précise que le travail sera présenté devant la direction en fin de matinée.' }
+          ]},
+          { speaker: 'Narration', narration: true, segments: [
+            { id: 'ex4_s3', text: 'Nina reste immobile quelques secondes, regarde son brouillon puis murmure qu’elle ne va pas y arriver.' },
+            { id: 'ex4_s4', text: 'Elle relit plusieurs fois les nouvelles consignes sans parler à son groupe.' }
+          ]},
+          { speaker: 'Narration', narration: true, segments: [
+            { id: 'ex4_s5', text: 'L’enseignante répète qu’il faut faire vite et que ce n’est pas compliqué.' },
+            { id: 'ex4_s6', text: 'Elle rappelle aussi que les groupes les plus efficaces passeront en premier.' }
+          ]},
+          { speaker: 'Narration', narration: true, segments: [
+            { id: 'ex4_s7', text: 'Nina finit par demander si quelqu’un peut lui redire calmement ce qu’il faut faire.' },
+            { id: 'ex4_s8', text: 'Quand vient le moment de s’organiser, elle dit qu’elle a la tête vide.' }
+          ]}
+        ],
+        correction: {
+          stress: ['ex4_s3', 'ex4_s4', 'ex4_s7', 'ex4_s8'],
+          pressure: ['ex4_s1', 'ex4_s2', 'ex4_s5', 'ex4_s6']
+        },
+        comments: {
+          ex4_s1: 'Le changement tardif de consigne constitue une source de pression contextuelle.',
+          ex4_s2: 'La perspective d’une présentation devant la direction augmente l’exposition et l’enjeu.',
+          ex4_s3: 'La verbalisation d’un sentiment d’incapacité est un indice pertinent de stress probable.',
+          ex4_s4: 'La relecture répétée et le retrait relationnel peuvent signaler une surcharge.',
+          ex4_s5: 'Le rappel de la vitesse attendu, associé à une minimisation de la difficulté, peut majorer la tension.',
+          ex4_s6: 'La mise en concurrence implicite des groupes accentue la pression de performance.',
+          ex4_s7: 'La demande d’une reformulation calme peut traduire un besoin de régulation face à la tension.',
+          ex4_s8: 'Dire avoir la tête vide peut indiquer un blocage sous pression.'
+        }
+      }
+    ];
+
+    const state = {
+      exerciseIndex: 0,
+      currentMode: null,
+      selectionsByExercise: {},
+      validatedByExercise: {},
+      correctionShownByExercise: {}
+    };
+
+    const transcript = document.getElementById('transcript');
+    const modeLabel = document.getElementById('modeLabel');
+    const progressText = document.getElementById('progressText');
+    const progressBar = document.getElementById('progressBar');
+    const stressCount = document.getElementById('stressCount');
+    const pressureCount = document.getElementById('pressureCount');
+    const adviceText = document.getElementById('adviceText');
+    const resultBadge = document.getElementById('resultBadge');
+    const resultText = document.getElementById('resultText');
+    const feedbackList = document.getElementById('feedbackList');
+    const resultNote = document.getElementById('resultNote');
+    const exerciseTitle = document.getElementById('exerciseTitle');
+    const exerciseMeta = document.getElementById('exerciseMeta');
+    const exerciseDescription = document.getElementById('exerciseDescription');
+    const exerciseCounter = document.getElementById('exerciseCounter');
+    const caseTypePill = document.getElementById('caseTypePill');
+    const prevExerciseBtn = document.getElementById('prevExerciseBtn');
+    const nextExerciseBtn = document.getElementById('nextExerciseBtn');
+
+    function getCurrentExercise() {
+      return exercises[state.exerciseIndex];
+    }
+
+    function getCurrentSelections() {
+      const exercise = getCurrentExercise();
+      if (!state.selectionsByExercise[exercise.id]) {
+        state.selectionsByExercise[exercise.id] = {};
+      }
+      return state.selectionsByExercise[exercise.id];
+    }
+
+    function isValidated() {
+      return Boolean(state.validatedByExercise[getCurrentExercise().id]);
+    }
+
+    function setValidated(value) {
+      state.validatedByExercise[getCurrentExercise().id] = value;
+    }
+
+    function setCorrectionShown(value) {
+      state.correctionShownByExercise[getCurrentExercise().id] = value;
+    }
+
+    function renderExerciseHeader() {
+      const exercise = getCurrentExercise();
+      exerciseTitle.textContent = exercise.title;
+      exerciseMeta.textContent = exercise.type;
+      exerciseDescription.textContent = exercise.description;
+      exerciseCounter.textContent = `Exercice ${state.exerciseIndex + 1} / ${exercises.length}`;
+      caseTypePill.textContent = exercise.type;
+      prevExerciseBtn.disabled = state.exerciseIndex === 0;
+      nextExerciseBtn.disabled = state.exerciseIndex === exercises.length - 1;
+    }
+
+    function renderTranscript() {
+      const exercise = getCurrentExercise();
+      const selections = getCurrentSelections();
+      const validated = isValidated();
+      const stressSet = new Set(exercise.correction.stress);
+      const pressureSet = new Set(exercise.correction.pressure);
+
+      transcript.innerHTML = '';
+
+      exercise.transcript.forEach(turn => {
+        const turnEl = document.createElement('div');
+        turnEl.className = `turn${turn.narration ? ' narration' : ''}`;
+
+        const speakerEl = document.createElement('div');
+        speakerEl.className = 'speaker';
+        speakerEl.textContent = turn.speaker;
+
+        const segmentsEl = document.createElement('div');
+        segmentsEl.className = 'segments';
+
+        turn.segments.forEach(segment => {
+          const segEl = document.createElement('span');
+          segEl.className = 'segment';
+          segEl.dataset.id = segment.id;
+          segEl.textContent = segment.text;
+
+          if (selections[segment.id] === 'stress') segEl.classList.add('selected-stress');
+          if (selections[segment.id] === 'pressure') segEl.classList.add('selected-pressure');
+
+          if (validated) {
+            segEl.classList.add('disabled');
+            if (stressSet.has(segment.id)) segEl.classList.add('correct-stress');
+            if (pressureSet.has(segment.id)) segEl.classList.add('correct-pressure');
+            if (!selections[segment.id] && (stressSet.has(segment.id) || pressureSet.has(segment.id))) {
+              segEl.classList.add('missed');
+            }
+          }
+
+          segEl.addEventListener('click', () => handleSegmentClick(segment.id));
+          segmentsEl.appendChild(segEl);
+        });
+
+        turnEl.appendChild(speakerEl);
+        turnEl.appendChild(segmentsEl);
+        transcript.appendChild(turnEl);
+      });
+    }
+
+    function setMode(mode) {
+      state.currentMode = mode;
+      document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mode === mode);
+      });
+
+      const labels = {
+        stress: 'Mode actuel : stress probable chez l’élève',
+        pressure: 'Mode actuel : formulation stressante',
+        erase: 'Mode actuel : effacer une annotation'
+      };
+
+      modeLabel.textContent = labels[mode] || 'Mode actuel : aucun';
+    }
+
+    function handleSegmentClick(id) {
+      if (isValidated() || !state.currentMode) return;
+      const selections = getCurrentSelections();
+
+      if (state.currentMode === 'erase') {
+        delete selections[id];
+      } else {
+        selections[id] = state.currentMode;
+      }
+
+      renderTranscript();
+      updateCounters();
+      updateWorkingState();
+    }
+
+    function updateCounters() {
+      const selections = getCurrentSelections();
+      const stressSelected = Object.values(selections).filter(v => v === 'stress').length;
+      const pressureSelected = Object.values(selections).filter(v => v === 'pressure').length;
+      const total = stressSelected + pressureSelected;
+      const percent = Math.min(Math.round((total / 6) * 100), 100);
+
+      stressCount.textContent = stressSelected;
+      pressureCount.textContent = pressureSelected;
+      progressText.textContent = `${total} sélection${total > 1 ? 's' : ''}`;
+      progressBar.style.width = `${percent}%`;
+
+      if (total === 0) {
+        adviceText.textContent = 'Commencez par lire l’ensemble du cas avant de sélectionner seulement les passages les plus défendables.';
+      } else if (stressSelected < 2) {
+        adviceText.textContent = 'Le critère final attend au moins 2 passages venant de l’élève.';
+      } else if (pressureSelected === 0) {
+        adviceText.textContent = 'Pensez aussi aux formulations de l’adulte ou du contexte qui augmentent l’urgence, la comparaison ou l’exposition.';
+      } else {
+        adviceText.textContent = 'Vérifiez que vos choix restent précis, défendables et appuyés sur le texte.';
+      }
+    }
+
+    function clearResults() {
+      resultBadge.className = 'badge';
+      resultBadge.textContent = 'En attente de validation';
+      resultText.textContent = 'Annotez le texte, puis cliquez sur « Valider mes réponses » pour comparer vos choix avec le corrigé.';
+      feedbackList.innerHTML = '';
+      resultNote.textContent = '';
+    }
+
+    function updateWorkingState() {
+      clearResults();
+      resultBadge.textContent = 'Annotation en cours';
+      resultText.textContent = 'Vos sélections ont été modifiées. Validez pour afficher le corrigé commenté.';
+    }
+
+    function validate() {
+      const exercise = getCurrentExercise();
+      const selections = getCurrentSelections();
+      const stressSet = new Set(exercise.correction.stress);
+      const pressureSet = new Set(exercise.correction.pressure);
+      const allCorrectIds = new Set([...stressSet, ...pressureSet]);
+      const userIds = Object.keys(selections);
+
+      setValidated(true);
+      setCorrectionShown(false);
+      renderTranscript();
+
+      let correctCount = 0;
+      let studentCorrect = 0;
+
+      userIds.forEach(id => {
+        const choice = selections[id];
+        if ((choice === 'stress' && stressSet.has(id)) || (choice === 'pressure' && pressureSet.has(id))) {
+          correctCount += 1;
+          if (stressSet.has(id)) studentCorrect += 1;
+        }
+      });
+
+      const criterionReached = correctCount >= 4 && studentCorrect >= 2;
+
+      resultBadge.className = `badge ${criterionReached ? 'success' : 'warning'}`;
+      resultBadge.textContent = criterionReached ? 'Critère atteint' : 'Critère à renforcer';
+      resultText.textContent = `Vous avez identifié ${correctCount} passage${correctCount > 1 ? 's' : ''} pertinent${correctCount > 1 ? 's' : ''}. Parmi eux, ${studentCorrect} viennent de l’élève.`;
+
+      feedbackList.innerHTML = '';
+      const feedbackEntries = [];
+
+      userIds.forEach(id => {
+        const choice = selections[id];
+        const isCorrect = (choice === 'stress' && stressSet.has(id)) || (choice === 'pressure' && pressureSet.has(id));
+        const item = document.createElement('div');
+        item.className = 'feedback-item';
+        item.innerHTML = isCorrect
+          ? `<strong>Correct.</strong> ${exercise.comments[id] || 'Choix pertinent.'}`
+          : `<strong>À revoir.</strong> Ce passage n’est pas retenu dans le corrigé pour cette catégorie.`;
+        feedbackEntries.push(item);
+      });
+
+      [...allCorrectIds].filter(id => !selections[id]).forEach(id => {
+        const item = document.createElement('div');
+        item.className = 'feedback-item';
+        item.innerHTML = `<strong>Passage à repérer.</strong> ${exercise.comments[id]}`;
+        feedbackEntries.push(item);
+      });
+
+      if (feedbackEntries.length === 0) {
+        const item = document.createElement('div');
+        item.className = 'feedback-item';
+        item.innerHTML = '<strong>Aucune sélection.</strong> Vous pouvez relire le texte et recommencer.';
+        feedbackEntries.push(item);
+      }
+
+      feedbackEntries.forEach(entry => feedbackList.appendChild(entry));
+
+      resultNote.textContent = criterionReached
+        ? 'Le seuil attendu est atteint pour cet exercice. Vous pouvez passer au suivant.'
+        : 'Le seuil attendu est de 4 passages pertinents, dont au moins 2 venant de l’élève. Les passages manqués sont signalés dans le corrigé.';
+    }
+
+    function showCorrection() {
+      const exercise = getCurrentExercise();
+      const selections = getCurrentSelections();
+      Object.keys(selections).forEach(key => delete selections[key]);
+      exercise.correction.stress.forEach(id => { selections[id] = 'stress'; });
+      exercise.correction.pressure.forEach(id => { selections[id] = 'pressure'; });
+
+      setValidated(true);
+      setCorrectionShown(true);
+      renderTranscript();
+      updateCounters();
+
+      resultBadge.className = 'badge success';
+      resultBadge.textContent = 'Correction affichée';
+      resultText.textContent = 'Les passages retenus dans le corrigé sont maintenant surlignés dans le texte.';
+      feedbackList.innerHTML = '';
+
+      [...exercise.correction.stress, ...exercise.correction.pressure].forEach(id => {
+        const item = document.createElement('div');
+        item.className = 'feedback-item';
+        item.innerHTML = `<strong>Repère corrigé.</strong> ${exercise.comments[id]}`;
+        feedbackList.appendChild(item);
+      });
+
+      resultNote.textContent = 'Le même principe de correction est utilisé pour tous les exercices.';
+    }
+
+    function resetCurrentExercise() {
+      const exercise = getCurrentExercise();
+      state.selectionsByExercise[exercise.id] = {};
+      state.validatedByExercise[exercise.id] = false;
+      state.correctionShownByExercise[exercise.id] = false;
+      renderTranscript();
+      updateCounters();
+      clearResults();
+    }
+
+    function goToExercise(index) {
+      state.exerciseIndex = index;
+      renderCurrentExercise();
+    }
+
+    function renderCurrentExercise() {
+      renderExerciseHeader();
+      renderTranscript();
+      updateCounters();
+      clearResults();
+
+      if (isValidated()) {
+        resultBadge.textContent = 'Corrigé déjà consulté';
+        resultText.textContent = 'Cet exercice a déjà été validé. Vous pouvez le réannoter en le réinitialisant.';
+      }
+    }
+
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+      btn.addEventListener('click', () => setMode(btn.dataset.mode));
+    });
+
+    document.getElementById('validateBtn').addEventListener('click', validate);
+    document.getElementById('showCorrectionBtn').addEventListener('click', showCorrection);
+    document.getElementById('resetBtn').addEventListener('click', resetCurrentExercise);
+    prevExerciseBtn.addEventListener('click', () => goToExercise(state.exerciseIndex - 1));
+    nextExerciseBtn.addEventListener('click', () => goToExercise(state.exerciseIndex + 1));
+
+    setMode('stress');
+    renderCurrentExercise();
+  </script>
+</body>
+</html>
+
+</body>
+</html>

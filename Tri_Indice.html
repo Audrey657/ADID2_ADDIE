@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Activité 1 — Tri d’indices</title>
+  <style>
+    :root {
+      --bg: #f7f1ea;
+      --bg-soft: #fcf8f4;
+      --card: rgba(255, 252, 248, 0.95);
+      --text: #2f2a26;
+      --muted: #74685f;
+      --line: #e8d9cc;
+      --primary: #b8614b;
+      --primary-dark: #8f4636;
+      --accent: #d89f54;
+      --sage: #93a28b;
+      --blue: #7d9fb5;
+      --ok: #3f7a54;
+      --warn: #b17626;
+      --bad: #a34c42;
+      --shadow: 0 14px 34px rgba(104, 70, 49, 0.12);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(216,159,84,0.18), transparent 25%),
+        radial-gradient(circle at top right, rgba(184,97,75,0.14), transparent 26%),
+        linear-gradient(180deg, #fbf6f0 0%, var(--bg) 100%);
+    }
+
+    body {
+      padding: 28px;
+    }
+
+    .shell {
+      max-width: 1360px;
+      margin: 0 auto;
+      display: grid;
+      gap: 22px;
+    }
+
+    .hero,
+    .deck-card,
+    .board-card,
+    .result-card {
+      background: var(--card);
+      border: 1px solid rgba(232, 217, 204, 0.92);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero {
+      padding: 28px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -34px;
+      top: -34px;
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(216,159,84,0.22), rgba(216,159,84,0));
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(184, 97, 75, 0.1);
+      color: var(--primary-dark);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    h1 {
+      margin: 16px 0 10px;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      line-height: 1.08;
+    }
+
+    .hero p,
+    .meta,
+    .zone-subtitle,
+    .helper,
+    .result-text,
+    .note,
+    .small {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .chip {
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--bg-soft);
+      font-size: 0.94rem;
+    }
+
+    .side-panel {
+      display: grid;
+      gap: 16px;
+      align-content: start;
+    }
+
+    .info-box,
+    .score-box {
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.76), rgba(250,244,238,0.9));
+    }
+
+    .info-box strong,
+    .score-box strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .score-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      font-size: 0.96rem;
+    }
+
+    .score-track {
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      background: #efe3d7;
+      overflow: hidden;
+    }
+
+    .score-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transition: width 0.3s ease;
+    }
+
+    .deck-card,
+    .board-card,
+    .result-card {
+      padding: 24px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .section-head h2,
+    .result-card h2 {
+      margin: 0;
+      font-size: 1.3rem;
+    }
+
+    .pill,
+    .deck-counter {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .deck-layout {
+      display: block;
+    }
+
+    .deck-stack {
+      display: grid;
+      gap: 18px;
+      min-height: 400px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(250,244,238,0.96));
+      border: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+      padding: 24px;
+    }
+
+    .deck-stack::before,
+    .deck-stack::after {
+      content: "";
+      position: absolute;
+      width: min(320px, 76%);
+      height: 210px;
+      border-radius: 22px;
+      border: 1px solid rgba(232,217,204,0.85);
+      background: rgba(255,252,248,0.78);
+      box-shadow: 0 8px 18px rgba(104, 70, 49, 0.05);
+      left: 50%;
+      top: 44%;
+      transform-origin: center;
+      pointer-events: none;
+    }
+
+    .deck-stack::before {
+      transform: translate(-50%, -50%) translateY(18px) rotate(-3deg);
+    }
+
+    .deck-stack::after {
+      transform: translate(-50%, -50%) translateY(8px) rotate(2deg);
+    }
+
+    .deck-panel-top,
+    .deck-panel-bottom {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .navigation-hint {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .current-card-wrap {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      place-items: center;
+      min-height: 240px;
+    }
+
+    .current-card {
+      background: #fffdfa;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      min-height: 220px;
+      width: min(420px, 92%);
+      padding: 28px;
+      box-shadow: 0 16px 30px rgba(104, 70, 49, 0.12);
+      cursor: grab;
+      transition: transform 0.18s ease, box-shadow 0.22s ease, border-color 0.2s ease;
+      user-select: none;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .current-card:hover {
+      transform: translateY(-2px) rotate(-0.4deg);
+      box-shadow: 0 20px 32px rgba(104, 70, 49, 0.14);
+      border-color: rgba(184,97,75,0.3);
+    }
+
+    .current-card:active { cursor: grabbing; }
+    .current-card.dragging { opacity: 0.55; }
+
+    .current-card-text {
+      line-height: 1.58;
+      font-size: 1.15rem;
+      max-width: 100%;
+    }
+
+    .deck-empty {
+      width: min(420px, 92%);
+      min-height: 220px;
+      border-radius: 22px;
+      border: 1px dashed rgba(141,119,99,0.28);
+      background: rgba(255,255,255,0.7);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 24px;
+      color: var(--muted);
+      position: relative;
+      z-index: 2;
+    }
+
+    .mini-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-left: auto;
+    }
+
+    .mini-btn {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fffdfa;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.2s ease;
+    }
+
+    .mini-btn:hover { transform: translateY(-1px); }
+
+    .board-card {
+      text-align: center;
+    }
+
+    .board-intro {
+      max-width: 920px;
+      margin: 0 auto 18px;
+    }
+
+    .zones-table {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      align-items: start;
+      justify-content: center;
+    }
+
+    .zone {
+      min-height: 370px;
+      border-radius: 22px;
+      border: 1px dashed rgba(141, 119, 99, 0.32);
+      padding: 16px;
+      display: grid;
+      align-content: start;
+      gap: 12px;
+      transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+      text-align: left;
+    }
+
+    .zone.is-over {
+      border-color: rgba(184,97,75,0.46);
+      background: rgba(255,248,242,0.96);
+      transform: translateY(-1px);
+    }
+
+    .zone-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .zone-title {
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    .zone-subtitle {
+      font-size: 0.88rem;
+      margin-top: 4px;
+    }
+
+    .zone-count {
+      min-width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display: inline-grid;
+      place-items: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+      background: rgba(255,255,255,0.82);
+      border: 1px solid var(--line);
+      color: var(--text);
+    }
+
+    .zone[data-zone="verbal"] {
+      background: linear-gradient(180deg, rgba(184,97,75,0.08), rgba(255,255,255,0.6));
+    }
+
+    .zone[data-zone="nonverbal"] {
+      background: linear-gradient(180deg, rgba(147,162,139,0.1), rgba(255,255,255,0.6));
+    }
+
+    .zone[data-zone="contextuel"] {
+      background: linear-gradient(180deg, rgba(216,159,84,0.1), rgba(255,255,255,0.6));
+    }
+
+    .zone[data-zone="insuffisant"] {
+      background: linear-gradient(180deg, rgba(125,159,181,0.1), rgba(255,255,255,0.6));
+    }
+
+    .drop-list {
+      min-height: 240px;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .placeholder {
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px dashed rgba(141, 119, 99, 0.2);
+      color: var(--muted);
+      font-size: 0.92rem;
+      background: rgba(255,255,255,0.45);
+      text-align: center;
+    }
+
+    .placed-item {
+      background: #fffdfa;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 6px 14px rgba(104, 70, 49, 0.05);
+      transition: transform 0.16s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .placed-item:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 18px rgba(104, 70, 49, 0.09);
+      border-color: rgba(184,97,75,0.3);
+    }
+
+    .placed-item-top {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .remove-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+      color: var(--text);
+      font-weight: 700;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .placed-text {
+      font-size: 0.94rem;
+      line-height: 1.5;
+    }
+
+    .feedback {
+      display: none;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(141,119,99,0.22);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .placed-item.correct {
+      border-color: rgba(63,122,84,0.35);
+      background: rgba(63,122,84,0.06);
+    }
+
+    .placed-item.incorrect {
+      border-color: rgba(163,76,66,0.36);
+      background: rgba(163,76,66,0.06);
+    }
+
+    .placed-item.correct .feedback,
+    .placed-item.incorrect .feedback {
+      display: block;
+    }
+
+    .feedback strong {
+      display: inline-block;
+      margin-right: 6px;
+    }
+
+    .placed-item.correct .feedback strong { color: var(--ok); }
+    .placed-item.incorrect .feedback strong { color: var(--bad); }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 13px 18px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #c97a5f);
+      color: white;
+      box-shadow: 0 10px 22px rgba(184, 97, 75, 0.24);
+    }
+
+    .btn-secondary {
+      background: #fffdfa;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .btn-tertiary {
+      background: rgba(147,162,139,0.12);
+      color: var(--text);
+      border: 1px solid rgba(147,162,139,0.24);
+    }
+
+    .result-card {
+      display: grid;
+      gap: 10px;
+    }
+
+    .result-title {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge {
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+    }
+
+    .badge.success {
+      color: var(--ok);
+      border-color: rgba(63,122,84,0.26);
+      background: rgba(63,122,84,0.08);
+    }
+
+    .badge.warning {
+      color: var(--warn);
+      border-color: rgba(177,118,38,0.28);
+      background: rgba(177,118,38,0.08);
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+      font-size: 0.9rem;
+    }
+
+    .swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .swatch.ok { background: rgba(63,122,84,0.8); }
+    .swatch.bad { background: rgba(163,76,66,0.8); }
+
+    @media (max-width: 1180px) {
+      .hero,
+      .zones-table {
+        grid-template-columns: 1fr;
+      }
+
+      .board-card {
+        text-align: left;
+      }
+
+      .board-intro {
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
+
+    @media (max-width: 760px) {
+      body { padding: 16px; }
+      .hero,
+      .deck-card,
+      .board-card,
+      .result-card { padding: 18px; }
+      .actions,
+      .mini-actions,
+      .deck-panel-bottom { flex-direction: column; align-items: stretch; }
+      button,
+      .mini-btn { width: 100%; }
+      .zone { min-height: 280px; }
+      .current-card,
+      .deck-empty { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Activité 1 · tri d’indices</div>
+        <h1>Classer des indices de stress</h1>
+        <p>
+          Faites glisser chaque carte dans la bonne catégorie : <strong>verbal</strong>,
+          <strong>non verbal</strong>, <strong>contextuel</strong> ou <strong>insuffisant pour conclure</strong>.
+          Les cartes apparaissent une par une pour alléger l’écran et garder l’attention sur l’item en cours.
+        </p>
+        <div class="chips">
+          <span class="chip">16 items à classer</span>
+          <span class="chip">Travail individuel</span>
+          <span class="chip">Correction immédiate</span>
+          <span class="chip">Réussite attendue : 13 / 16</span>
+        </div>
+      </div>
+
+      <aside class="side-panel">
+        <div class="info-box">
+          <strong>Consigne</strong>
+          Classez chaque élément dans la bonne catégorie. Certains indices sont trop isolés ou trop vagues pour permettre une conclusion prudente.
+        </div>
+        <div class="score-box">
+          <div class="score-line">
+            <span>Progression</span>
+            <strong id="progressText">0 / 16 placés</strong>
+          </div>
+          <div class="score-track" aria-hidden="true">
+            <div class="score-bar" id="progressBar"></div>
+          </div>
+          <p class="meta" style="margin: 12px 0 0;">Vous pouvez retirer une carte d’une colonne et la replacer si nécessaire.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="deck-card">
+      <div class="section-head">
+        <div>
+          <h2>Carte à classer</h2>
+          <div class="meta">Faites glisser la carte visible vers l’une des quatre colonnes.</div>
+        </div>
+      </div>
+
+      <div class="deck-layout">
+        <div class="deck-stack" id="deckStack">
+          <div class="deck-panel-top">
+            <div class="deck-counter" id="remainingPill">16 cartes restantes</div>
+          </div>
+
+          <div class="current-card-wrap" id="currentCardWrap"></div>
+
+          <div class="deck-panel-bottom">
+            <div class="navigation-hint">Navigation : les cartes se succèdent automatiquement après chaque dépôt.</div>
+            <div class="mini-actions">
+              <button class="mini-btn" id="skipBtn" type="button">Passer cette carte</button>
+              <button class="mini-btn" id="shuffleBtn" type="button">Mélanger les cartes non placées</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="board-card">
+      <div class="board-intro">
+        <div class="section-head" style="margin-bottom: 10px; align-items: center;">
+          <div>
+            <h2>Tableau de classement</h2>
+            <div class="meta">Les quatre colonnes restent visibles sur une même ligne quand l’espace de l’écran le permet.</div>
+          </div>
+          <div class="pill">Classement en cours</div>
+        </div>
+      </div>
+
+      <div class="zones-table">
+        <section class="zone" data-zone="verbal">
+          <div class="zone-header">
+            <div>
+              <div class="zone-title">Verbal</div>
+              <div class="zone-subtitle">Paroles, formulation, manière de dire.</div>
+            </div>
+            <div class="zone-count" id="count-verbal">0</div>
+          </div>
+          <div class="drop-list" id="zone-verbal"></div>
+        </section>
+
+        <section class="zone" data-zone="nonverbal">
+          <div class="zone-header">
+            <div>
+              <div class="zone-title">Non verbal</div>
+              <div class="zone-subtitle">Posture, gestes, regard, rythme, ton observable.</div>
+            </div>
+            <div class="zone-count" id="count-nonverbal">0</div>
+          </div>
+          <div class="drop-list" id="zone-nonverbal"></div>
+        </section>
+
+        <section class="zone" data-zone="contextuel">
+          <div class="zone-header">
+            <div>
+              <div class="zone-title">Contextuel</div>
+              <div class="zone-subtitle">Situation, environnement, événement lié à la scène.</div>
+            </div>
+            <div class="zone-count" id="count-contextuel">0</div>
+          </div>
+          <div class="drop-list" id="zone-contextuel"></div>
+        </section>
+
+        <section class="zone" data-zone="insuffisant">
+          <div class="zone-header">
+            <div>
+              <div class="zone-title">Insuffisant</div>
+              <div class="zone-subtitle">Indice trop vague, trop isolé ou ambigu.</div>
+            </div>
+            <div class="zone-count" id="count-insuffisant">0</div>
+          </div>
+          <div class="drop-list" id="zone-insuffisant"></div>
+        </section>
+      </div>
+
+      <div class="actions">
+        <button class="btn-primary" id="validateBtn" type="button">Valider mes réponses</button>
+        <button class="btn-secondary" id="showCorrectionBtn" type="button">Afficher la correction</button>
+        <button class="btn-tertiary" id="resetBtn" type="button">Réinitialiser</button>
+      </div>
+    </section>
+
+    <section class="result-card">
+      <div class="result-title">
+        <h2>Résultat et feedback</h2>
+        <div class="badge" id="resultBadge">En attente de validation</div>
+      </div>
+      <div class="result-text" id="resultText">
+        Classez les 16 cartes, puis cliquez sur « Valider mes réponses » pour afficher le score et le feedback automatique.
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="swatch ok"></span> Item bien classé</div>
+        <div class="legend-item"><span class="swatch bad"></span> Item à revoir</div>
+      </div>
+      <div class="note" id="resultNote"></div>
+    </section>
+  </main>
+
+  <script>
+    const items = [
+      { id: 1, text: '« Je n’y arriverai jamais. »', category: 'verbal', explanation: 'C’est une formulation verbale explicite prononcée par l’élève.' },
+      { id: 2, text: 'L’élève évite le regard et garde les épaules très crispées.', category: 'nonverbal', explanation: 'Il s’agit d’éléments corporels et posturaux observables.' },
+      { id: 3, text: 'Une évaluation surprise vient d’être annoncée au début de la leçon.', category: 'contextuel', explanation: 'C’est un élément du contexte susceptible d’influencer l’état de l’élève.' },
+      { id: 4, text: 'L’élève est silencieux pendant quelques secondes.', category: 'insuffisant', explanation: 'Pris seul, cet élément reste trop vague pour soutenir une conclusion.' },
+      { id: 5, text: '« Madame, je vais me tromper. »', category: 'verbal', explanation: 'L’indice est verbal, car il repose sur les paroles de l’élève.' },
+      { id: 6, text: 'L’élève froisse sa feuille, respire vite et bouge sans cesse sur sa chaise.', category: 'nonverbal', explanation: 'Ces manifestations sont visibles et relèvent du non verbal.' },
+      { id: 7, text: 'Le travail demandé est chronométré et doit être réalisé seul.', category: 'contextuel', explanation: 'Cela décrit les conditions de la tâche, donc le contexte.' },
+      { id: 8, text: 'L’élève porte un pull rouge.', category: 'insuffisant', explanation: 'Cet élément descriptif n’apporte pas d’indice pertinent sur le stress.' },
+      { id: 9, text: '« Je ne comprends plus rien. » dit l’élève d’une voix tremblante.', category: 'verbal', explanation: 'L’item contient une parole formulée par l’élève ; il est donc classé en verbal.' },
+      { id: 10, text: 'Ses mains tremblent lorsqu’il prend son cahier.', category: 'nonverbal', explanation: 'Le tremblement observé relève du non verbal.' },
+      { id: 11, text: 'L’élève doit lire son texte devant toute la classe dans moins d’une minute.', category: 'contextuel', explanation: 'La situation de passage à l’oral décrit le contexte immédiat.' },
+      { id: 12, text: 'L’élève regarde par la fenêtre.', category: 'insuffisant', explanation: 'Ce comportement est trop ambigu s’il est isolé de tout autre indice.' },
+      { id: 13, text: '« Je veux sortir, s’il vous plaît. »', category: 'verbal', explanation: 'Il s’agit d’une demande exprimée oralement par l’élève.' },
+      { id: 14, text: 'L’élève serre fortement son crayon et garde la mâchoire contractée.', category: 'nonverbal', explanation: 'Ce sont des signes corporels observables.' },
+      { id: 15, text: 'La consigne a changé au dernier moment et l’élève n’avait pas terminé la précédente.', category: 'contextuel', explanation: 'Cet item décrit un changement de situation lié au contexte de travail.' },
+      { id: 16, text: 'L’élève est fatigué.', category: 'insuffisant', explanation: 'Formulé ainsi, l’énoncé relève déjà d’une interprétation trop générale et reste insuffisant.' }
+    ];
+
+    const containers = {
+      verbal: document.getElementById('zone-verbal'),
+      nonverbal: document.getElementById('zone-nonverbal'),
+      contextuel: document.getElementById('zone-contextuel'),
+      insuffisant: document.getElementById('zone-insuffisant')
+    };
+
+    const state = {
+      deck: [],
+      placements: {},
+      validated: false,
+      correctionShown: false
+    };
+
+    const currentCardWrap = document.getElementById('currentCardWrap');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const resultBadge = document.getElementById('resultBadge');
+    const resultText = document.getElementById('resultText');
+    const resultNote = document.getElementById('resultNote');
+    const remainingPill = document.getElementById('remainingPill');
+
+    function shuffleArray(array) {
+      const copy = [...array];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function initDeck() {
+      state.deck = shuffleArray(items.map(item => item.id));
+      state.placements = {};
+      state.validated = false;
+      state.correctionShown = false;
+    }
+
+    function getItemById(id) {
+      return items.find(item => item.id === id);
+    }
+
+    function getCurrentItem() {
+      const nextId = state.deck[0];
+      return nextId ? getItemById(nextId) : null;
+    }
+
+    function renderCurrentCard() {
+      currentCardWrap.innerHTML = '';
+      const currentItem = getCurrentItem();
+      const remaining = state.deck.length;
+      remainingPill.textContent = remaining > 0 ? `${remaining} carte${remaining > 1 ? 's' : ''} restante${remaining > 1 ? 's' : ''}` : 'Toutes les cartes sont placées';
+
+      if (!currentItem) {
+        const empty = document.createElement('div');
+        empty.className = 'deck-empty';
+        empty.innerHTML = '<div><strong style="display:block; margin-bottom:8px; color: var(--text);">Pioche terminée</strong>Vous avez classé toutes les cartes. Vous pouvez maintenant valider vos réponses ou revoir vos colonnes.</div>';
+        currentCardWrap.appendChild(empty);
+        return;
+      }
+
+      const card = document.createElement('article');
+      card.className = 'current-card';
+      card.draggable = true;
+      card.dataset.id = currentItem.id;
+      card.innerHTML = `<div class="current-card-text">${currentItem.text}</div>`;
+
+      card.addEventListener('dragstart', (e) => {
+        e.dataTransfer.setData('text/plain', String(currentItem.id));
+        card.classList.add('dragging');
+      });
+
+      card.addEventListener('dragend', () => {
+        card.classList.remove('dragging');
+      });
+
+      currentCardWrap.appendChild(card);
+    }
+
+    function renderPlacedItems() {
+      Object.values(containers).forEach(container => {
+        container.innerHTML = '';
+      });
+
+      ['verbal', 'nonverbal', 'contextuel', 'insuffisant'].forEach(zoneName => {
+        const zoneItems = items.filter(item => state.placements[item.id] === zoneName);
+        const container = containers[zoneName];
+
+        if (zoneItems.length === 0) {
+          const placeholder = document.createElement('div');
+          placeholder.className = 'placeholder';
+          placeholder.textContent = 'Déposez ici les cartes correspondant à cette catégorie.';
+          container.appendChild(placeholder);
+        }
+
+        zoneItems.forEach(item => {
+          const element = document.createElement('article');
+          element.className = 'placed-item';
+          element.dataset.id = item.id;
+          element.innerHTML = `
+            <div class="placed-item-top">
+              <button class="remove-btn" type="button" title="Retirer cette carte">↺</button>
+            </div>
+            <div class="placed-text">${item.text}</div>
+            <div class="feedback"></div>
+          `;
+
+          element.querySelector('.remove-btn').addEventListener('click', () => {
+            removePlacement(item.id);
+          });
+
+          if (state.validated) {
+            applyFeedback(element, item);
+          }
+
+          container.appendChild(element);
+        });
+      });
+
+      updateCounts();
+      updateProgress();
+    }
+
+    function updateCounts() {
+      ['verbal', 'nonverbal', 'contextuel', 'insuffisant'].forEach(zone => {
+        const count = items.filter(item => state.placements[item.id] === zone).length;
+        document.getElementById(`count-${zone}`).textContent = count;
+      });
+    }
+
+    function updateProgress() {
+      const placed = items.filter(item => state.placements[item.id]).length;
+      const percent = Math.round((placed / items.length) * 100);
+      progressText.textContent = `${placed} / ${items.length} placés`;
+      progressBar.style.width = `${percent}%`;
+    }
+
+    function placeCurrentCard(targetZone) {
+      const currentId = state.deck.shift();
+      if (!currentId) return;
+      state.placements[currentId] = targetZone;
+      state.validated = false;
+      renderAll();
+      setWorkingState();
+    }
+
+    function removePlacement(id) {
+      delete state.placements[id];
+      state.deck.unshift(id);
+      state.validated = false;
+      renderAll();
+      setWorkingState();
+    }
+
+    function applyFeedback(element, item) {
+      const chosen = state.placements[item.id];
+      const feedback = element.querySelector('.feedback');
+      const isCorrect = chosen === item.category;
+      element.classList.toggle('correct', isCorrect);
+      element.classList.toggle('incorrect', !isCorrect);
+
+      if (isCorrect) {
+        feedback.innerHTML = `<strong>Correct.</strong> ${item.explanation}`;
+      } else {
+        const labels = {
+          verbal: 'verbal',
+          nonverbal: 'non verbal',
+          contextuel: 'contextuel',
+          insuffisant: 'insuffisant pour conclure'
+        };
+        feedback.innerHTML = `<strong>À revoir.</strong> La bonne catégorie est « ${labels[item.category]} ». ${item.explanation}`;
+      }
+    }
+
+    function validate() {
+      state.validated = true;
+      state.correctionShown = false;
+      renderPlacedItems();
+
+      const placed = items.filter(item => state.placements[item.id]).length;
+      const correct = items.filter(item => state.placements[item.id] === item.category).length;
+      const allPlaced = placed === items.length;
+
+      if (!allPlaced) {
+        resultBadge.className = 'badge warning';
+        resultBadge.textContent = 'Validation partielle';
+        resultText.textContent = `Vous avez ${correct} bonne${correct > 1 ? 's' : ''} réponse${correct > 1 ? 's' : ''} sur 16 pour l’instant. Certaines cartes ne sont pas encore classées.`;
+        resultNote.textContent = 'Terminez le classement pour obtenir votre résultat complet.';
+        return;
+      }
+
+      const success = correct >= 13;
+      resultBadge.className = `badge ${success ? 'success' : 'warning'}`;
+      resultBadge.textContent = success ? 'Critère atteint' : 'Critère non atteint';
+      resultText.textContent = `Score : ${correct} / 16. ${success ? 'Vous atteignez le critère de réussite.' : 'Le critère de réussite est fixé à 13 bonnes réponses sur 16.'}`;
+      resultNote.textContent = success
+        ? 'Consultez le feedback affiché dans les colonnes pour consolider votre repérage des indices.'
+        : 'Relisez les cartes signalées « à revoir », puis reclassez-les si nécessaire.';
+    }
+
+    function showCorrection() {
+      state.deck = [];
+      items.forEach(item => {
+        state.placements[item.id] = item.category;
+      });
+      state.validated = true;
+      state.correctionShown = true;
+      renderAll();
+      resultBadge.className = 'badge success';
+      resultBadge.textContent = 'Correction affichée';
+      resultText.textContent = 'Toutes les cartes ont été replacées dans la bonne catégorie.';
+      resultNote.textContent = 'Vous pouvez maintenant observer la logique de classement et le feedback associé à chaque item.';
+    }
+
+    function resetActivity() {
+      initDeck();
+      renderAll();
+      resultBadge.className = 'badge';
+      resultBadge.textContent = 'En attente de validation';
+      resultText.textContent = 'Classez les 16 cartes, puis cliquez sur « Valider mes réponses » pour afficher le score et le feedback automatique.';
+      resultNote.textContent = '';
+    }
+
+    function setWorkingState() {
+      resultBadge.className = 'badge';
+      resultBadge.textContent = 'Tri en cours';
+      resultText.textContent = 'Votre classement a été modifié. Validez à nouveau pour actualiser le feedback.';
+      resultNote.textContent = '';
+    }
+
+    function skipCurrentCard() {
+      if (state.deck.length <= 1) return;
+      const first = state.deck.shift();
+      state.deck.push(first);
+      renderCurrentCard();
+    }
+
+    function shuffleRemainingDeck() {
+      state.deck = shuffleArray(state.deck);
+      renderCurrentCard();
+    }
+
+    function renderAll() {
+      renderCurrentCard();
+      renderPlacedItems();
+    }
+
+    function setupDropZones() {
+      document.querySelectorAll('.zone').forEach(zone => {
+        zone.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          zone.classList.add('is-over');
+        });
+
+        zone.addEventListener('dragleave', () => {
+          zone.classList.remove('is-over');
+        });
+
+        zone.addEventListener('drop', (e) => {
+          e.preventDefault();
+          zone.classList.remove('is-over');
+          const targetZone = zone.dataset.zone;
+          const draggedId = Number(e.dataTransfer.getData('text/plain'));
+          const currentItem = getCurrentItem();
+
+          if (!targetZone || !currentItem || draggedId !== currentItem.id) return;
+          placeCurrentCard(targetZone);
+        });
+      });
+    }
+
+    document.getElementById('validateBtn').addEventListener('click', validate);
+    document.getElementById('showCorrectionBtn').addEventListener('click', showCorrection);
+    document.getElementById('resetBtn').addEventListener('click', resetActivity);
+    document.getElementById('skipBtn').addEventListener('click', skipCurrentCard);
+    document.getElementById('shuffleBtn').addEventListener('click', shuffleRemainingDeck);
+
+    setupDropZones();
+    initDeck();
+    renderAll();
+  </script>
+</body>
+</html>
+
+</body>
+</html>

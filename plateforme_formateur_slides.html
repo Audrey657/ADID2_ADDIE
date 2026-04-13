@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plateforme formateur slides | Repérer le stress chez les élèves</title>
+  <style>
+    :root {
+      --palette-coral: #c96d6f;
+      --palette-blush: #e5a39a;
+      --palette-sage: #b9ccbc;
+      --palette-teal: #5c9ea9;
+      --palette-navy: #2f3d6a;
+      --bg: #ffffff;
+      --bg-soft: #ffffff;
+      --surface: rgba(255, 255, 255, 0.98);
+      --surface-strong: rgba(255, 255, 255, 0.99);
+      --surface-muted: rgba(248, 248, 248, 0.95);
+      --line: rgba(0, 0, 0, 0.14);
+      --line-strong: rgba(0, 0, 0, 0.28);
+      --text: #101010;
+      --muted: #474747;
+      --primary: var(--palette-navy);
+      --primary-dark: #000000;
+      --primary-soft: rgba(47, 61, 106, 0.12);
+      --accent: var(--palette-coral);
+      --accent-soft: rgba(201, 109, 111, 0.14);
+      --success: var(--palette-teal);
+      --warning: var(--palette-blush);
+      --danger: #9b4c54;
+      --shadow: 0 20px 45px rgba(0, 0, 0, 0.1);
+      --shadow-soft: 0 12px 28px rgba(0, 0, 0, 0.07);
+      --radius-xl: 0;
+      --radius-lg: 0;
+      --radius-md: 0;
+      --radius-sm: 0;
+      --font-body: "Aptos", "Avenir Next", "Segoe UI Variable", "Segoe UI", sans-serif;
+      --font-display: "Aptos Display", "Aptos", "Avenir Next", "Segoe UI Variable", "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--bg);
+      letter-spacing: 0.003em;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: transparent;
+      mask-image: none;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    a,
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .app-shell {
+      position: relative;
+      z-index: 1;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 18px clamp(16px, 4vw, 34px) 72px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .panel,
+    .topbar,
+    .sector,
+    .hero-main,
+    .pathway-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 12px;
+      z-index: 30;
+      width: min(1440px, calc(100% - 32px));
+      margin: 12px auto 0;
+      padding: 14px 16px;
+      display: grid;
+      gap: 12px;
+      background: var(--surface);
+    }
+
+    .topbar-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      border-radius: 0;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .brand strong,
+    h1,
+    h2,
+    h3,
+    h4 {
+      font-family: var(--font-display);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 1.02rem;
+    }
+
+    .brand small,
+    .meta,
+    .micro,
+    .hint,
+    .note {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .brand small {
+      display: block;
+      margin-top: 2px;
+    }
+
+    .quick-nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .nav-link,
+    .tag,
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.86);
+      font-size: 0.82rem;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .nav-link:hover {
+      border-color: var(--line-strong);
+      background: rgba(255, 255, 255, 0.98);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .hero-main,
+    .hero-side {
+      padding: clamp(22px, 3vw, 30px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-main::after {
+      content: "";
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      right: -92px;
+      top: -96px;
+      border-radius: 0;
+      background: transparent;
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border-radius: 0;
+      background: rgba(185, 204, 188, 0.42);
+      color: var(--primary-dark);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      margin: 0;
+      line-height: 1.08;
+    }
+
+    h1 {
+      margin-top: 16px;
+      max-width: 22ch;
+    }
+
+    h2 {
+      font-size: clamp(1.4rem, 2vw, 1.95rem);
+    }
+
+    h3 {
+      font-size: 1.08rem;
+    }
+
+    h4 {
+      font-size: 0.98rem;
+    }
+
+    .hero-copy {
+      margin: 16px 0 0;
+      max-width: 66ch;
+      font-size: 1rem;
+      line-height: 1.72;
+      color: var(--muted);
+    }
+
+    .hero-list,
+    .material-list,
+    .guidance-list,
+    .download-list,
+    .resource-list,
+    .phase-steps,
+    .hero-chips {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+      background: var(--surface);
+    }
+
+    .pathway-card {
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+    }
+
+    .pathway-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .pathway-number {
+      width: 34px;
+      height: 34px;
+      border-radius: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(185, 204, 188, 0.42);
+      color: var(--primary-dark);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .mini-track {
+      width: 100%;
+      height: 8px;
+      border-radius: 0;
+      background: var(--accent-soft);
+      overflow: hidden;
+    }
+
+    .mini-track span {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: var(--primary);
+    }
+
+    .parcours-panel {
+      padding: 18px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .phase-steps {
+      align-items: stretch;
+    }
+
+    .phase-step {
+      flex: 1 1 220px;
+      min-width: 0;
+      padding: 16px;
+      border-radius: 0;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.9);
+      display: grid;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .phase-step::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 4px;
+      background: var(--primary);
+    }
+
+    .phase-step.is-onsite::before {
+      background: var(--primary);
+    }
+
+    .phase-step strong {
+      font-weight: 600;
+    }
+
+    .sector {
+      padding: clamp(20px, 2.5vw, 28px);
+      display: grid;
+      gap: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sector::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 4px;
+      background: var(--primary);
+    }
+
+    .sector::after {
+      content: "";
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      right: -90px;
+      bottom: -110px;
+      border-radius: 0;
+      background: transparent;
+      pointer-events: none;
+    }
+
+    .sector > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .sector-distance {
+      background: var(--surface);
+    }
+
+    .sector-distance::before {
+      background: var(--palette-teal);
+    }
+
+    .sector-onsite {
+      background: var(--surface);
+    }
+
+    .sector-onsite::before {
+      background: var(--accent);
+    }
+
+    .sector-onsite::after {
+      background: transparent;
+    }
+
+    .sector-head,
+    .activity-head,
+    .info-head,
+    .resource-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .sector-title p {
+      margin: 10px 0 0;
+      max-width: 72ch;
+      color: var(--muted);
+      line-height: 1.66;
+    }
+
+    .phase-group {
+      display: grid;
+      gap: 12px;
+    }
+
+    .phase-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 0;
+      background: rgba(185, 204, 188, 0.42);
+      color: var(--primary-dark);
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    .phase-group[data-phase="after"] .phase-label {
+      background: rgba(229, 163, 154, 0.26);
+    }
+
+    .sector-onsite .phase-label {
+      background: var(--accent-soft);
+      color: var(--primary-dark);
+    }
+
+    .activity-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .digital-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .onsite-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .activity-card {
+      padding: 18px;
+      border-radius: 0;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      display: grid;
+      gap: 14px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .sector-onsite .activity-card {
+      background: var(--surface);
+    }
+
+    .activity-kicker {
+      color: var(--primary);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .sector-onsite .activity-kicker {
+      color: var(--accent);
+    }
+
+    .activity-summary {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.66;
+    }
+
+    .info-box {
+      padding: 14px;
+      border-radius: 0;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.78);
+      display: grid;
+      gap: 8px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .meta-card {
+      padding: 12px;
+      border-radius: 0;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.84);
+      display: grid;
+      gap: 6px;
+    }
+
+    .meta-card strong {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .meta-card span {
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .guidance-list,
+    .material-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .download-list {
+      gap: 8px;
+    }
+
+    .resource-link,
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 9px 13px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .resource-link:hover,
+    .btn:hover {
+      transform: translateY(-1px);
+      border-color: var(--line-strong);
+    }
+
+    .btn-primary,
+    .resource-link.primary {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .btn-secondary,
+    .resource-link.secondary {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    .btn-ghost,
+    .resource-link.ghost {
+      background: rgba(185, 204, 188, 0.42);
+      color: var(--primary-dark);
+    }
+
+    .note-box {
+      padding: 14px 16px;
+      border-radius: 0;
+      border: 1px dashed var(--line-strong);
+      background: var(--surface);
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .resources-panel {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .resource-bank {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .resource-card {
+      padding: 16px;
+      border-radius: 0;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.9);
+      display: grid;
+      gap: 12px;
+    }
+
+    .footer-card {
+      padding: 16px 18px;
+      border-radius: 0;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--muted);
+      line-height: 1.66;
+    }
+
+    .slide-shell {
+      gap: 20px;
+    }
+
+    .slide {
+      display: none;
+      gap: 18px;
+    }
+
+    .slide.is-active {
+      display: grid;
+      animation: slideFade 220ms ease;
+    }
+
+    @keyframes slideFade {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    button.nav-link,
+    button.slide-card-action,
+    button.btn {
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .nav-link.is-active {
+      border-color: var(--line-strong);
+      background: rgba(92, 158, 169, 0.16);
+      color: var(--primary);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .axis-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .axis-card,
+    .objective-shell {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .axis-card {
+      padding: 22px;
+      display: grid;
+      gap: 18px;
+      min-height: 280px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .axis-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 4px;
+      background: var(--card-tone, var(--primary));
+    }
+
+    .axis-card[data-axis="1"] { --card-tone: var(--accent); }
+    .axis-card[data-axis="2"] { --card-tone: var(--palette-blush); }
+    .axis-card[data-axis="3"] { --card-tone: var(--palette-teal); }
+    .axis-card[data-axis="4"] { --card-tone: var(--primary); }
+
+    .axis-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .axis-title {
+      display: grid;
+      gap: 6px;
+    }
+
+    .axis-title strong {
+      display: block;
+      font-size: 1.08rem;
+      line-height: 1.3;
+    }
+
+    .axis-step {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      background: rgba(185, 204, 188, 0.42);
+      font-size: 1rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .objective-list,
+    .summary-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .objective-link,
+    .journey-card {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--card-tone, var(--primary));
+      background: rgba(255, 255, 255, 0.98);
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+      text-align: left;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .objective-link strong,
+    .journey-card strong {
+      display: block;
+      font-size: 0.98rem;
+    }
+
+    button.objective-link,
+    button.journey-card {
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .journey-card[data-mode="digital"] { --card-tone: var(--palette-teal); }
+    .journey-card[data-mode="onsite"] { --card-tone: var(--accent); }
+
+    .objective-link:hover,
+    .objective-link:focus-visible,
+    .journey-card:hover,
+    .journey-card:focus-visible {
+      transform: translateY(-2px);
+      border-color: var(--line-strong);
+      box-shadow: 0 14px 24px rgba(0, 0, 0, 0.08);
+      outline: none;
+    }
+
+    .objective-link.is-disabled,
+    .journey-card.is-disabled {
+      cursor: default;
+    }
+
+    .objective-link.is-disabled:hover,
+    .journey-card.is-disabled:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.96);
+      font-size: 0.78rem;
+      font-weight: 600;
+      justify-self: start;
+      color: var(--primary-dark);
+    }
+
+    .status-pill.available {
+      background: rgba(92, 158, 169, 0.16);
+      border-color: rgba(92, 158, 169, 0.3);
+      color: var(--primary-dark);
+    }
+
+    .status-pill.placeholder {
+      border-style: dashed;
+      background: rgba(255, 255, 255, 0.98);
+      color: var(--muted);
+    }
+
+    .objective-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .objective-layout.single-column {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .objective-shell {
+      padding: 22px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .objective-hero {
+      padding: clamp(24px, 3vw, 32px);
+    }
+
+    .objective-hero h2 {
+      margin-top: 12px;
+      max-width: 28ch;
+    }
+
+    .journey-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .journey-grid.single-card {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .placeholder-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .placeholder-card {
+      min-height: 150px;
+      padding: 18px;
+      border: 1px dashed var(--line-strong);
+      background: rgba(255, 255, 255, 0.98);
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .feedback-item {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.96);
+      line-height: 1.6;
+    }
+
+    .module-footer {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      background: var(--surface-muted);
+    }
+
+    .footer-copy {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .home-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .slide-card-action {
+      width: 100%;
+      text-align: left;
+    }
+
+    .slide-card-action strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .slide-card-action .meta {
+      display: block;
+    }
+
+    .slide-toolbar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    @media (max-width: 1220px) {
+      .hero-grid,
+      .digital-grid,
+      .onsite-grid,
+      .resource-bank,
+      .home-actions,
+      .axis-grid,
+      .objective-layout,
+      .journey-grid,
+      .placeholder-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        width: calc(100% - 24px);
+        margin-top: 10px;
+      }
+
+      .app-shell {
+        padding: 16px 14px 64px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topbar {
+        top: 8px;
+      }
+
+      h1 {
+        max-width: none;
+      }
+
+      .hero-main,
+      .hero-side,
+      .sector,
+      .panel {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-row">
+      <div class="brand">
+        <div class="brand-mark">PF</div>
+        <div>
+          <strong>Plateforme formateur</strong>
+          <small>Guide structuré par axes, objectifs, numérique et présentiel.</small>
+        </div>
+      </div>
+
+      <nav class="quick-nav" aria-label="Navigation des slides">
+        <button class="nav-link" type="button" data-slide="slide-home">Parcours</button>
+        <button class="nav-link" type="button" data-slide="slide-objective-5">Objectif 5</button>
+        <button class="nav-link" type="button" data-slide="slide-presentiel">Présentiel</button>
+        <button class="nav-link" type="button" data-slide="slide-distance">Numérique</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="app-shell slide-shell">
+    <section class="slide is-active" id="slide-home">
+      <section class="hero-grid">
+        <article class="hero-main">
+          <div class="eyebrow">Parcours formateur</div>
+          <h2>Organiser le guide formateur par axes, objectifs et modalités de travail</h2>
+          <p class="hero-copy">
+            Cette page reprend la logique du parcours étudiant : les contenus du formateur sont rangés par axes, puis par objectifs.
+            Pour l’instant, l’axe 2 est le seul à disposer de rubriques détaillées en <strong>numérique</strong> et en <strong>présentiel</strong>.
+          </p>
+          <div class="hero-chips">
+            <span class="pill">4 axes</span>
+            <span class="pill">5 objectifs repérés</span>
+            <span class="pill">Axe 2 opérationnel</span>
+          </div>
+        </article>
+
+        <aside class="hero-side panel">
+          <div class="section-head">
+            <div class="sector-title">
+              <h3>Vue d’ensemble</h3>
+              <p>Le guide formateur est maintenant structuré comme un parcours : on entre par un axe, on ouvre un objectif, puis on accède aux rubriques numérique et présentiel.</p>
+            </div>
+          </div>
+
+          <div class="summary-list">
+            <div class="feedback-item"><strong>Structure.</strong> Axes → objectifs → rubriques formateur.</div>
+            <div class="feedback-item"><strong>Disponible aujourd’hui.</strong> L’objectif 5 dispose déjà des deux rubriques détaillées.</div>
+            <div class="feedback-item"><strong>À venir.</strong> Les autres axes et objectifs sont prêts à recevoir leurs futures déclinaisons numériques et présentielles.</div>
+          </div>
+
+          <div class="slide-toolbar">
+            <a class="btn btn-secondary" href="index_slides.html" target="_blank" rel="noreferrer">Voir la plateforme étudiant</a>
+          </div>
+        </aside>
+      </section>
+
+      <section class="panel parcours-panel">
+        <div class="section-head">
+          <div class="sector-title">
+            <h2>Choisir un axe du parcours formateur</h2>
+            <p>Chaque axe regroupe les objectifs à accompagner. Les rubriques détaillées sont accessibles depuis les objectifs concernés.</p>
+          </div>
+        </div>
+
+        <div class="axis-grid">
+          <article class="axis-card" data-axis="1">
+            <div class="axis-head">
+              <div class="axis-title">
+                <div class="eyebrow">Axe 1</div>
+                <strong>Comprendre le lien entre émotions, bien-être et apprentissages</strong>
+              </div>
+              <div class="axis-step">1</div>
+            </div>
+            <div class="meta">Préparer ici les futures rubriques formateur liées à l’entrée émotionnelle, au bien-être et aux apprentissages.</div>
+            <div class="objective-list">
+              <button class="objective-link" type="button" data-slide="slide-objective-2">
+                <div>
+                  <strong>Objectif 2</strong>
+                  <div class="meta">Expliquer le rôle des émotions dans les apprentissages et le bien-être des élèves.</div>
+                </div>
+                <div class="status-pill placeholder">Rubriques à venir</div>
+              </button>
+            </div>
+          </article>
+
+          <article class="axis-card" data-axis="2">
+            <div class="axis-head">
+              <div class="axis-title">
+                <div class="eyebrow">Axe 2</div>
+                <strong>Prévenir : doser pour prévenir</strong>
+              </div>
+              <div class="axis-step">2</div>
+            </div>
+            <div class="meta">L’axe 2 accueille pour l’instant la partie la plus avancée du guide, avec une articulation entre distance et présentiel.</div>
+            <div class="objective-list">
+              <button class="objective-link" type="button" data-slide="slide-objective-5">
+                <div>
+                  <strong>Objectif 5</strong>
+                  <div class="meta">Repérer les signes de stress verbaux, non verbaux et contextuels chez les élèves.</div>
+                </div>
+                <div class="status-pill available">Numérique + présentiel</div>
+              </button>
+
+              <button class="objective-link" type="button" data-slide="slide-objective-6">
+                <div>
+                  <strong>Objectif 6</strong>
+                  <div class="meta">Reformuler les consignes stressantes en consignes neutres.</div>
+                </div>
+                <div class="status-pill placeholder">Rubriques à venir</div>
+              </button>
+            </div>
+          </article>
+
+          <article class="axis-card" data-axis="3">
+            <div class="axis-head">
+              <div class="axis-title">
+                <div class="eyebrow">Axe 3</div>
+                <strong>Communiquer de manière émotionnellement soutenante</strong>
+              </div>
+              <div class="axis-step">3</div>
+            </div>
+            <div class="meta">Prévoir ici les futurs repères d’animation et de guidage pour les situations nécessitant une intervention ajustée.</div>
+            <div class="objective-list">
+              <button class="objective-link" type="button" data-slide="slide-objective-8">
+                <div>
+                  <strong>Objectif 8</strong>
+                  <div class="meta">Intervenir rapidement et de manière adaptée dans une situation de classe.</div>
+                </div>
+                <div class="status-pill placeholder">Rubriques à venir</div>
+              </button>
+            </div>
+          </article>
+
+          <article class="axis-card" data-axis="4">
+            <div class="axis-head">
+              <div class="axis-title">
+                <div class="eyebrow">Axe 4</div>
+                <strong>Clore de manière sécurisante</strong>
+              </div>
+              <div class="axis-step">4</div>
+            </div>
+            <div class="meta">Cette partie accueillera plus tard les ressources formateur liées à la régulation finale et au soutien entre pairs.</div>
+            <div class="objective-list">
+              <button class="objective-link" type="button" data-slide="slide-objective-11">
+                <div>
+                  <strong>Objectif 11</strong>
+                  <div class="meta">Expliquer aux élèves comment agir entre eux de manière plus soutenante.</div>
+                </div>
+                <div class="status-pill placeholder">Rubriques à venir</div>
+              </button>
+            </div>
+          </article>
+        </div>
+      </section>
+    </section>
+
+    <section class="slide" id="slide-objective-2">
+      <article class="hero-main objective-hero">
+        <div class="eyebrow">Axe 1 · Objectif 2</div>
+        <h2>Expliquer le rôle des émotions dans les apprentissages et le bien-être des élèves</h2>
+        <p class="hero-copy">Cette slide formateur est prête à accueillir, plus tard, une rubrique numérique et une rubrique présentielle dédiées à l’objectif 2.</p>
+      </article>
+
+      <div class="objective-layout single-column">
+        <section class="objective-shell">
+          <div class="section-head">
+            <div>
+              <h3>Rubriques formateur</h3>
+              <div class="meta">Le cadre est prêt pour recevoir les déclinaisons numérique et présentiel de cet objectif.</div>
+            </div>
+            <div class="status-pill placeholder">À venir</div>
+          </div>
+
+          <div class="journey-grid">
+            <article class="journey-card is-disabled">
+              <div>
+                <strong>Rubrique numérique</strong>
+                <div class="meta">Prévoir ici ce que les étudiants feront à distance, les supports à ouvrir et les points d’attention pour le formateur.</div>
+              </div>
+              <div class="status-pill placeholder">Structure prête</div>
+            </article>
+
+            <article class="journey-card is-disabled">
+              <div>
+                <strong>Rubrique présentiel</strong>
+                <div class="meta">Prévoir ici l’animation en salle, le matériel, les consignes et les repères d’étayage du formateur.</div>
+              </div>
+              <div class="status-pill placeholder">Structure prête</div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-objective-5">
+      <article class="hero-main objective-hero">
+        <div class="eyebrow">Axe 2 · Objectif 5</div>
+        <h2>Repérer les signes de stress verbaux, non verbaux et contextuels chez les élèves</h2>
+        <p class="hero-copy">Cet objectif dispose déjà des deux rubriques formateur détaillées. La rubrique numérique explicite ce que les étudiants font à distance ; la rubrique présentiel guide l’animation en salle.</p>
+      </article>
+
+      <div class="objective-layout">
+        <section class="objective-shell">
+          <div class="section-head">
+            <div>
+              <h3>Rubriques formateur disponibles</h3>
+              <div class="meta">Les deux modalités déjà instaurées sont rangées ici, dans la même logique de parcours que côté étudiant.</div>
+            </div>
+            <div class="status-pill available">2 rubriques disponibles</div>
+          </div>
+
+          <div class="journey-grid">
+            <button class="journey-card" type="button" data-slide="slide-distance" data-mode="digital">
+              <div>
+                <strong>Rubrique numérique</strong>
+                <div class="meta">Avant et après le présentiel : 4 activités à distance, articulation avec la plateforme étudiant et repères pour le formateur.</div>
+              </div>
+              <div class="status-pill available">Disponible</div>
+            </button>
+
+            <button class="journey-card" type="button" data-slide="slide-presentiel" data-mode="onsite">
+              <div>
+                <strong>Rubrique présentiel</strong>
+                <div class="meta">4 activités en salle avec matériel, temps indicatifs, consignes d’animation et guidage pédagogique.</div>
+              </div>
+              <div class="status-pill available">Disponible</div>
+            </button>
+          </div>
+
+          <div class="module-footer">
+            <div class="footer-copy">L’objectif 5 sert de base modèle pour les futurs objectifs du guide formateur.</div>
+          </div>
+        </section>
+
+        <aside class="objective-shell">
+          <div class="section-head">
+            <div>
+              <h3>Repères d’articulation</h3>
+              <div class="meta">Le parcours formateur s’aligne désormais sur le parcours étudiant, tout en gardant les besoins d’animation et de préparation visibles.</div>
+            </div>
+          </div>
+
+          <div class="summary-list">
+            <div class="feedback-item"><strong>Avant.</strong> La rubrique numérique prépare le vocabulaire d’analyse et la première mise en observation.</div>
+            <div class="feedback-item"><strong>Pendant.</strong> La rubrique présentiel met les étudiants en activité, en observation et en mise en commun.</div>
+            <div class="feedback-item"><strong>Après.</strong> Le retour au numérique consolide l’analyse fine, les justifications et l’évaluation.</div>
+          </div>
+
+          <div class="slide-toolbar">
+            <button class="btn btn-ghost" type="button" data-slide="slide-home">Retour au parcours</button>
+            <a class="btn btn-secondary" href="index_slides.html" target="_blank" rel="noreferrer">Voir la plateforme étudiant</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-objective-6">
+      <article class="hero-main objective-hero">
+        <div class="eyebrow">Axe 2 · Objectif 6</div>
+        <h2>Reformuler les consignes stressantes en consignes neutres</h2>
+        <p class="hero-copy">La structure formateur est déjà prête pour accueillir les futures rubriques numérique et présentiel liées à la reformulation des consignes.</p>
+      </article>
+
+      <div class="objective-layout single-column">
+        <section class="objective-shell">
+          <div class="section-head">
+            <div>
+              <h3>Rubriques formateur</h3>
+              <div class="meta">Prévoir ici, plus tard, le guidage de l’activité à distance et de l’animation en présentiel pour l’objectif 6.</div>
+            </div>
+            <div class="status-pill placeholder">À venir</div>
+          </div>
+
+          <div class="journey-grid">
+            <article class="journey-card is-disabled">
+              <div>
+                <strong>Rubrique numérique</strong>
+                <div class="meta">Exemples, atelier de reformulation, repères pour suivre ce que les étudiants feront à distance.</div>
+              </div>
+              <div class="status-pill placeholder">Structure prête</div>
+            </article>
+
+            <article class="journey-card is-disabled">
+              <div>
+                <strong>Rubrique présentiel</strong>
+                <div class="meta">Animation de groupe, comparaison de formulations et guidage pédagogique à prévoir.</div>
+              </div>
+              <div class="status-pill placeholder">Structure prête</div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-objective-8">
+      <article class="hero-main objective-hero">
+        <div class="eyebrow">Axe 3 · Objectif 8</div>
+        <h2>Intervenir rapidement et de manière adaptée dans une situation de classe</h2>
+        <p class="hero-copy">Cette slide servira de point d’entrée formateur pour les futures rubriques numérique et présentiel de l’objectif 8.</p>
+      </article>
+
+      <div class="objective-layout single-column">
+        <section class="objective-shell">
+          <div class="section-head">
+            <div>
+              <h3>Rubriques formateur</h3>
+              <div class="meta">La structure est prête à accueillir les modalités de travail liées à cet objectif.</div>
+            </div>
+            <div class="status-pill placeholder">À venir</div>
+          </div>
+
+          <div class="journey-grid">
+            <article class="journey-card is-disabled">
+              <div>
+                <strong>Rubrique numérique</strong>
+                <div class="meta">Supports de préparation, cas brefs, lectures guidées et repères pour le travail à distance.</div>
+              </div>
+              <div class="status-pill placeholder">Structure prête</div>
+            </article>
+
+            <article class="journey-card is-disabled">
+              <div>
+                <strong>Rubrique présentiel</strong>
+                <div class="meta">Mises en situation, débriefs et guidage d’intervention rapide à intégrer plus tard.</div>
+              </div>
+              <div class="status-pill placeholder">Structure prête</div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-objective-11">
+      <article class="hero-main objective-hero">
+        <div class="eyebrow">Axe 4 · Objectif 11</div>
+        <h2>Expliquer aux élèves comment agir entre eux de manière plus soutenante</h2>
+        <p class="hero-copy">Cette base formateur accueillera plus tard les futures rubriques numérique et présentiel centrées sur le soutien entre pairs et la clôture sécurisante.</p>
+      </article>
+
+      <div class="objective-layout single-column">
+        <section class="objective-shell">
+          <div class="section-head">
+            <div>
+              <h3>Rubriques formateur</h3>
+              <div class="meta">La structure est en place pour les futures déclinaisons d’animation et d’accompagnement.</div>
+            </div>
+            <div class="status-pill placeholder">À venir</div>
+          </div>
+
+          <div class="journey-grid">
+            <article class="journey-card is-disabled">
+              <div>
+                <strong>Rubrique numérique</strong>
+                <div class="meta">Prévoir ici les ressources distancielles, supports de réflexion et repères de suivi pour le formateur.</div>
+              </div>
+              <div class="status-pill placeholder">Structure prête</div>
+            </article>
+
+            <article class="journey-card is-disabled">
+              <div>
+                <strong>Rubrique présentiel</strong>
+                <div class="meta">Prévoir ici les activités en présence, mises en commun et appuis d’animation dédiés à l’objectif 11.</div>
+              </div>
+              <div class="status-pill placeholder">Structure prête</div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-presentiel">
+      <section class="sector sector-onsite">
+        <div class="sector-head">
+          <div class="sector-title">
+            <div class="eyebrow">Axe 2 · Objectif 5 · Présentiel</div>
+            <h2>Rubrique présentiel</h2>
+            <p>Chaque fiche regroupe une base d’animation pour le formateur : matériel repéré dans le dossier, consigne d’utilisation, temps indicatif et guidage pédagogique.</p>
+          </div>
+          <div class="slide-toolbar">
+            <button class="btn btn-ghost" type="button" data-slide="slide-objective-5">Retour à l’objectif</button>
+            <a class="btn btn-secondary" href="index_slides.html" target="_blank" rel="noreferrer">Voir la plateforme étudiant</a>
+          </div>
+        </div>
+          
+        <div class="activity-grid onsite-grid">
+          <article class="activity-card">
+            <div class="activity-head">
+              <div>
+                <div class="activity-kicker">Présentiel · Activité 1 : Repérage d’indice</div>
+              </div>
+              <span class="tag">Activité d'ouverture</span>
+            </div>
+
+            <p class="activity-summary">Amener les étudiants à repérer et catégoriser les indices de stress, puis à verbaliser les critères qui rendent leur lecture plus ou moins défendable.</p>
+
+            <div class="meta-grid">
+              <div class="meta-card">
+                <strong>Temps</strong>
+                <span>15 minutes</span>
+              </div>
+              <div class="meta-card">
+                <strong>Format</strong>
+                <span>Groupes de 2 ou 3</span>
+              </div>
+              <div class="meta-card">
+                <strong>But</strong>
+                <span>Poser des repères communs d’observation</span>
+              </div>
+            </div>
+
+            <div class="info-box">
+              <h4>Consigne d’utilisation</h4>
+              <div class="meta">Distribuer les cartes ou projeter les supports, demander aux étudiants de classer les indices, puis faire justifier les choix et discuter les hésitations.</div>
+            </div>
+
+            <div class="info-box">
+              <h4>Guidage pour le formateur</h4>
+              <ul class="guidance-list">
+                <li>Faire expliciter ce qui relève du verbal, du non verbal, du contextuel ou d’un indice insuffisant.</li>
+                <li>Relancer les étudiants sur la distinction entre fait observable et interprétation.</li>
+                <li>S’appuyer sur les désaccords pour affiner les critères de lecture.</li>
+              </ul>
+            </div>
+
+            <div class="info-box">
+              <h4>Matériel à télécharger</h4>
+              <div class="download-list">
+                <a class="resource-link primary" href="Cartesindices.pdf" download>Cartes d'indice PDF</a>
+                <a class="resource-link secondary" href="Cartesindices.pptx" download>Cartes d'indice PPTX</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="activity-card">
+            <div class="activity-head">
+              <div>
+                <div class="activity-kicker">Présentiel · Activité 2 : Freeze</div>
+              </div>
+              <span class="tag">Activité centrale</span>
+            </div>
+
+            <p class="activity-summary">Travailler la lecture de situations figées ou interrompues afin d’aider les étudiants à observer rapidement les indices, les positions et les tensions en jeu.</p>
+
+            <div class="meta-grid">
+              <div class="meta-card">
+                <strong>Temps</strong>
+                <span>30 minutes</span>
+              </div>
+              <div class="meta-card">
+                <strong>Format</strong>
+                <span>Mise en situation, arrêt sur image, échanges</span>
+              </div>
+              <div class="meta-card">
+                <strong>But</strong>
+                <span>Observer la scène avant de l’interpréter</span>
+              </div>
+            </div>
+
+            <div class="info-box">
+              <h4>Consigne d’utilisation</h4>
+              <div class="meta">Proposer une scène ou un support, interrompre l’action à un moment clé, puis demander aux étudiants ce qu’ils observent avant d’émettre des hypothèses.</div>
+            </div>
+
+            <div class="info-box">
+              <h4>Guidage pour le formateur</h4>
+              <ul class="guidance-list">
+                <li>Inviter d’abord à décrire ce qui est vu, entendu ou perçu dans la posture.</li>
+                <li>Faire distinguer les éléments liés à l’élève, à l’adulte et au contexte.</li>
+                <li>Revenir sur ce qui met potentiellement sous pression dans la scène.</li>
+              </ul>
+            </div>
+
+            <div class="info-box">
+              <h4>Matériel à télécharger</h4>
+              <div class="download-list">
+                <a class="resource-link primary" href="Freeze.pdf" download>Cartes "Scènes à jouer" PDF</a>
+                <a class="resource-link secondary" href="Freeze.pptx" download>Cartes "Scènes à jouer" PPTX</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="activity-card">
+            <div class="activity-head">
+              <div>
+                <div class="activity-kicker">Présentiel · Activité 3 : Étude de cas</div>
+              </div>
+              <span class="tag">Activité centrale</span>
+            </div>
+
+            <p class="activity-summary">Amener les étudiants à analyser une situation plus développée, à croiser les indices et à construire une hypothèse prudente sur ce qui se joue pour l’élève.</p>
+
+            <div class="meta-grid">
+              <div class="meta-card">
+                <strong>Temps</strong>
+                <span>45 minutes</span>
+              </div>
+              <div class="meta-card">
+                <strong>Format</strong>
+                <span>Par groupe de 4 </span>
+              </div>
+              <div class="meta-card">
+                <strong>But</strong>
+                <span>Passer du repérage à l’argumentation</span>
+              </div>
+            </div>
+
+            <div class="info-box">
+              <h4>Consigne d’utilisation</h4>
+              <div class="meta">Distribuer les fiches d'observations. Chaque étudiant présentent l'étude de cas préparée en vue de la scéance. Les autres remplissent la fiche d'observation avant d'en discuter ensemble.</div>
+            </div>
+
+            <div class="info-box">
+              <h4>Lien avec la plateforme élève</h4>
+              <div class="meta">Cette activité présentielle prolonge directement l’activité numérique 2, dans laquelle les étudiants préparent une situation réelle et une première analyse de posture.</div>
+              <div class="download-list">
+                <a class="resource-link secondary" href="index_slides.html#slide-prep" target="_blank" rel="noreferrer">Ouvrir l’activité 2 côté étudiant</a>
+                <a class="resource-link ghost" href="index_slides.html" target="_blank" rel="noreferrer">Voir la plateforme élève</a>
+              </div>
+            </div>
+
+            <div class="info-box">
+              <h4>Guidage pour le formateur</h4>
+              <ul class="guidance-list">
+                <li>Faire repérer ce qui relève de l’élève, du contexte et de la réponse adulte.</li>
+                <li>Encourager les formulations prudentes plutôt que les diagnostics rapides.</li>
+                <li>Faire verbaliser sur quels indices s’appuie chaque interprétation.</li>
+              </ul>
+            </div>
+
+            <div class="info-box">
+              <h4>Matériel à télécharger</h4>
+              <div class="download-list">
+                <a class="resource-link primary" href="fiche_retour_observateurs_harmonisee_modifiable.pdf" download>Fiche observateur PDF</a>
+                <a class="resource-link secondary" href="fiche_retour_observateurs_harmonisee_modifiable.docx" download>Fiche observateur DOCX</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="activity-card">
+            <div class="activity-head">
+              <div>
+                <div class="activity-kicker">Présentiel · Activité 4 : Synthèse et debrief</div>
+              </div>
+              <span class="tag">Activité de clôture</span>
+            </div>
+
+            <p class="activity-summary">Clore le présentiel en mettant en commun les repères retenus, les points de vigilance et les éléments à transférer dans la pratique professionnelle.</p>
+
+            <div class="meta-grid">
+              <div class="meta-card">
+                <strong>Temps</strong>
+                <span>15 minutes</span>
+              </div>
+              <div class="meta-card">
+                <strong>Format</strong>
+                <span>Retour collectif, synthèse, traces écrites</span>
+              </div>
+              <div class="meta-card">
+                <strong>But</strong>
+                <span>Stabiliser les apprentissages</span>
+              </div>
+            </div>
+
+            <div class="info-box">
+              <h4>Consigne d’utilisation</h4>
+              <div class="meta">Faire reformuler les principaux apprentissages du parcours, les points d’attention pour la pratique et les questions encore ouvertes.</div>
+            </div>
+
+            <div class="info-box">
+              <h4>Guidage pour le formateur</h4>
+              <ul class="guidance-list">
+                <li>Revenir sur les repères construits au fil des activités.</li>
+                <li>Faire émerger ce que les étudiants transfèrent dans leurs futures observations de classe.</li>
+                <li>Conserver une trace commune des idées de synthèse ou des retours d’observation.</li>
+              </ul>
+            </div>
+
+            <div class="info-box">
+              <h4>Matériel à télécharger</h4>
+              <div class="download-list">
+                <a class="resource-link primary" href="FicheSynthèseGroupe.pdf" download>Fiche synthèse groupe PDF</a>
+                <a class="resource-link secondary" href="FicheSynthèseGroupe.docx" download>Fiche synthèse groupe DOCX</a>
+                <a class="resource-link ghost" href="FichesynthèseGroupe_Corrigé.pdf" download>Modèle corrigé PDF</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </section>
+
+    <section class="slide" id="slide-distance">
+      <section class="sector sector-distance">
+        <div class="sector-head">
+          <div class="sector-title">
+            <div class="eyebrow">Axe 2 · Objectif 5 · Numérique</div>
+            <h2>Rubrique numérique</h2>
+            <p>Cette partie explique au formateur ce que les étudiants font chez eux, à quel moment cela intervient, et quel support numérique peut être ouvert ou revu.</p>
+          </div>
+          <div class="slide-toolbar">
+            <button class="btn btn-ghost" type="button" data-slide="slide-objective-5">Retour à l’objectif</button>
+            <a class="btn btn-secondary" href="index_slides.html" target="_blank" rel="noreferrer">Voir la plateforme étudiant</a>
+          </div>
+        </div>
+
+        <div class="phase-group" data-phase="before">
+          <div class="phase-label">Avant le présentiel</div>
+          <div class="activity-grid digital-grid">
+            <article class="activity-card">
+              <div class="activity-head">
+                <div>
+                  <div class="activity-kicker">Numérique · Activité 1 : Tri d’indice </div>
+                </div>
+                <span class="tag">Activité d'ouverture</span>
+              </div>
+
+              <p class="activity-summary">Les étudiants s’exercent à distinguer différents types d’indices : verbal, non verbal, contextuel ou insuffisant pour conclure.</p>
+
+              <div class="info-box">
+                <h4>Ce que font les étudiants</h4>
+                <div class="meta">Ils classent des cartes d’indices et apprennent à justifier leurs choix à partir d’éléments observables plutôt qu’à partir d’interprétations rapides.</div>
+              </div>
+
+              <div class="info-box">
+                <h4>Ce que le formateur doit savoir</h4>
+                <div class="meta">Cette activité sert de base commune. Elle prépare le vocabulaire d’analyse et les catégories qui seront réinvesties pendant le présentiel.</div>
+              </div>
+
+              <div class="download-list">
+                <a class="resource-link primary" href="index_slides.html#slide-sort" target="_blank" rel="noreferrer">Ouvrir l’activité étudiant</a>
+              </div>
+            </article>
+
+            <article class="activity-card">
+              <div class="activity-head">
+                <div>
+                  <div class="activity-kicker">Numérique · Activité 2 : Préparation de l’étude de cas</div>
+                 
+                </div>
+                <span class="tag">Activité centrale</span>
+              </div>
+
+              <p class="activity-summary">Les étudiants préparent une situation réelle de classe en distinguant observation de la situation et analyse de posture.</p>
+
+              <div class="info-box">
+                <h4>Ce que font les étudiants</h4>
+                <div class="meta">Ils décrivent un cas, relèvent des indices et formulent une hypothèse prudente, puis réfléchissent à leur propre posture professionnelle.</div>
+              </div>
+
+              <div class="info-box">
+                <h4>Ce que le formateur doit savoir</h4>
+                <div class="meta">Cette étape alimente le présentiel : elle permet d’arriver avec une situation déjà pensée, donc plus facile à travailler collectivement.</div>
+              </div>
+
+              <div class="download-list">
+                <a class="resource-link primary" href="index_slides.html#slide-prep" target="_blank" rel="noreferrer">Ouvrir l’activité étudiant</a>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="phase-group" data-phase="after">
+          <div class="phase-label">Après le présentiel</div>
+          <div class="activity-grid digital-grid">
+            <article class="activity-card">
+              <div class="activity-head">
+                <div>
+                  <div class="activity-kicker">Numérique · Activité 3 : Verbatim</div>
+                  
+                </div>
+                <span class="tag">Activité centrale</span>
+              </div>
+
+              <p class="activity-summary">Les étudiants annotent des verbatims pour mieux distinguer les indices de stress chez l’élève et les formulations qui renforcent la pression.</p>
+
+              <div class="info-box">
+                <h4>Ce que font les étudiants</h4>
+                <div class="meta">Ils lisent des cas, sélectionnent les passages les plus défendables et confrontent leurs choix à un corrigé commenté.</div>
+              </div>
+
+              <div class="info-box">
+                <h4>Ce que le formateur doit savoir</h4>
+                <div class="meta">Cette activité prolonge le présentiel en consolidant l’analyse fine du langage, de la pression et des indices argumentables.</div>
+              </div>
+
+              <div class="download-list">
+                <a class="resource-link primary" href="index_slides.html#slide-verbatim" target="_blank" rel="noreferrer">Ouvrir l’activité étudiant</a>
+              </div>
+            </article>
+
+            <article class="activity-card">
+              <div class="activity-head">
+                <div>
+                  <div class="activity-kicker">Numérique · Activité 4 : Évaluation</div>
+                
+                </div>
+                <span class="tag">Activité de clôture</span>
+              </div>
+
+              <p class="activity-summary">Les étudiants analysent une scène de classe, identifient un élève en état probable de stress et justifient leur lecture par quatre indices observables.</p>
+
+              <div class="info-box">
+                <h4>Ce que font les étudiants</h4>
+                <div class="meta">Ils visionnent une vidéo, construisent une réponse argumentée et mobilisent plusieurs catégories d’observation.</div>
+              </div>
+
+              <div class="info-box">
+                <h4>Ce que le formateur doit savoir</h4>
+                <div class="meta">Cette activité sert de consolidation finale. Elle permet de vérifier si les étudiants relient correctement observation, hypothèse et justification.</div>
+              </div>
+
+              <div class="download-list">
+                <a class="resource-link primary" href="index_slides.html#slide-eval" target="_blank" rel="noreferrer">Ouvrir l’activité étudiant</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <footer class="footer-card">
+      Cette plateforme formateur est maintenant structurée par axes, objectifs et modalités. L’axe 2 sert de modèle pour les prochaines rubriques à venir.
+    </footer>
+  </main>
+
+  <script>
+    const slideIds = [
+      "slide-home",
+      "slide-objective-2",
+      "slide-objective-5",
+      "slide-objective-6",
+      "slide-objective-8",
+      "slide-objective-11",
+      "slide-presentiel",
+      "slide-distance"
+    ];
+    const slideElements = Array.from(document.querySelectorAll(".slide"));
+    const triggers = Array.from(document.querySelectorAll("[data-slide]"));
+
+    function showSlide(slideId, behavior = "smooth") {
+      const targetId = slideIds.includes(slideId) ? slideId : "slide-home";
+
+      slideElements.forEach((slide) => {
+        slide.classList.toggle("is-active", slide.id === targetId);
+      });
+
+      triggers.forEach((trigger) => {
+        if (!trigger.classList.contains("nav-link")) {
+          return;
+        }
+        const isActive = trigger.dataset.slide === targetId;
+        trigger.classList.toggle("is-active", isActive);
+        trigger.setAttribute("aria-current", isActive ? "page" : "false");
+      });
+
+      if (window.location.hash !== `#${targetId}`) {
+        history.replaceState(null, "", `#${targetId}`);
+      }
+
+      window.scrollTo({ top: 0, behavior });
+    }
+
+    triggers.forEach((trigger) => {
+      trigger.addEventListener("click", () => showSlide(trigger.dataset.slide));
+    });
+
+    showSlide(window.location.hash.replace("#", ""), "auto");
+  </script>
+</body>
+</html>

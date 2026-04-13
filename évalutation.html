@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Évaluation — Repérage du stress chez les élèves</title>
+  <style>
+    :root {
+      --bg: #f7f1ea;
+      --bg-soft: #fcf8f4;
+      --card: rgba(255, 252, 248, 0.96);
+      --text: #2f2a26;
+      --muted: #74685f;
+      --line: #e8d9cc;
+      --primary: #b8614b;
+      --primary-dark: #8f4636;
+      --accent: #d89f54;
+      --sage: #93a28b;
+      --blue: #7d9fb5;
+      --ok: #3f7a54;
+      --warn: #b17626;
+      --shadow: 0 14px 34px rgba(104, 70, 49, 0.12);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(216,159,84,0.18), transparent 25%),
+        radial-gradient(circle at top right, rgba(184,97,75,0.14), transparent 26%),
+        linear-gradient(180deg, #fbf6f0 0%, var(--bg) 100%);
+    }
+
+    body { padding: 28px; }
+    .shell { max-width: 1380px; margin: 0 auto; display: grid; gap: 22px; }
+
+    .hero,
+    .video-card,
+    .workspace,
+    .reflection-card,
+    .group-card,
+    .result-card {
+      background: var(--card);
+      border: 1px solid rgba(232,217,204,0.92);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero {
+      padding: 28px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -34px;
+      top: -34px;
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(216,159,84,0.22), rgba(216,159,84,0));
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(184,97,75,0.1);
+      color: var(--primary-dark);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    h1 { margin: 16px 0 10px; font-size: clamp(1.8rem, 3vw, 2.5rem); line-height: 1.08; }
+    h2, h3 { margin: 0; }
+
+    .hero p,
+    .meta,
+    .hint,
+    .note,
+    .counter,
+    .criterion-text,
+    .small {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+    .chip,
+    .pill {
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--bg-soft);
+      font-size: 0.94rem;
+    }
+
+    .side-panel { display: grid; gap: 16px; align-content: start; }
+    .info-box,
+    .score-box,
+    .mini-card,
+    .form-card,
+    .aside-card,
+    .video-frame,
+    .reflection-panel,
+    .group-panel {
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.76), rgba(250,244,238,0.9));
+    }
+
+    .info-box strong,
+    .score-box strong,
+    .mini-card strong,
+    .time-box strong { display: block; margin-bottom: 8px; font-size: 1rem; }
+
+    .progress-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      font-size: 0.96rem;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      background: #efe3d7;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transition: width 0.3s ease;
+    }
+
+    .video-card,
+    .workspace,
+    .reflection-card,
+    .group-card,
+    .result-card { padding: 24px; }
+
+    .section-head,
+    .result-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .video-layout,
+    .workspace,
+    .reflection-layout,
+    .group-layout {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .video-frame { min-height: 420px; display: grid; align-content: start; overflow: hidden; }
+    .video-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .video-wrap {
+      position: relative;
+      background: #efe6dc;
+      aspect-ratio: 16 / 9;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+
+    video { width: 100%; height: 100%; display: block; background: #ddd1c5; }
+    .video-placeholder {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      text-align: center;
+      color: var(--muted);
+      background: radial-gradient(circle at center, rgba(255,255,255,0.55), rgba(239,230,220,0.92));
+    }
+    .video-placeholder.hidden { display: none; }
+
+    .video-actions,
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      align-items: center;
+    }
+
+    .video-side,
+    .aside-grid,
+    .criteria-list,
+    .feedback-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .time-grid,
+    .criteria-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .time-box,
+    .criterion,
+    .feedback-item,
+    .observer-box,
+    .group-box,
+    .summary-box {
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.76);
+    }
+
+    .criterion {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .criterion-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid var(--line);
+      display: inline-grid;
+      place-items: center;
+      flex-shrink: 0;
+      font-size: 0.8rem;
+      margin-top: 2px;
+    }
+
+    .criterion.done .criterion-dot {
+      color: var(--ok);
+      border-color: rgba(63,122,84,0.34);
+      background: rgba(63,122,84,0.12);
+    }
+
+    .criterion.warn .criterion-dot {
+      color: var(--warn);
+      border-color: rgba(177,118,38,0.34);
+      background: rgba(177,118,38,0.12);
+    }
+
+    .form-card,
+    .aside-card,
+    .reflection-panel,
+    .group-panel { padding: 20px; }
+    form { display: grid; gap: 18px; }
+    .field,
+    .evidence-card,
+    .observer-box,
+    .group-box,
+    .summary-box { display: grid; gap: 8px; }
+
+    label { font-weight: 700; font-size: 0.97rem; }
+    .field small,
+    .evidence-card small,
+    .observer-box small,
+    .group-box small,
+    .summary-box small { color: var(--muted); }
+
+    input[type="text"],
+    textarea,
+    select,
+    input[type="file"] {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #fffdfa;
+      color: var(--text);
+      border-radius: 16px;
+      padding: 14px 16px;
+      font: inherit;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    textarea { min-height: 96px; resize: vertical; }
+    input:focus, textarea:focus, select:focus {
+      border-color: rgba(184,97,75,0.55);
+      box-shadow: 0 0 0 4px rgba(184,97,75,0.12);
+    }
+
+    .target-card {
+      padding: 16px 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(147,162,139,0.25);
+      background: linear-gradient(180deg, rgba(147,162,139,0.12), rgba(147,162,139,0.06));
+    }
+
+    .evidence-grid { display: grid; gap: 14px; }
+    .evidence-card {
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.72);
+    }
+
+    .evidence-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+
+    .evidence-number {
+      width: 32px;
+      height: 32px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    .evidence-fields {
+      display: grid;
+      grid-template-columns: 0.36fr 0.64fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    button {
+      border: 1px solid var(--line);
+      background: #fffdfa;
+      color: var(--text);
+      border-radius: 999px;
+      padding: 12px 16px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
+
+    .primary {
+      background: linear-gradient(135deg, var(--primary), #c97a5f);
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 10px 22px rgba(184,97,75,0.24);
+    }
+
+    .secondary {
+      background: rgba(147,162,139,0.12);
+      border-color: rgba(147,162,139,0.24);
+    }
+
+    .badge {
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+    }
+
+    .badge.success {
+      color: var(--ok);
+      border-color: rgba(63,122,84,0.26);
+      background: rgba(63,122,84,0.08);
+    }
+
+    .badge.warning {
+      color: var(--warn);
+      border-color: rgba(177,118,38,0.28);
+      background: rgba(177,118,38,0.08);
+    }
+
+    .feedback-item strong { display: inline-block; margin-right: 6px; }
+
+    @media (max-width: 1080px) {
+      .hero,
+      .video-layout,
+      .workspace,
+      .reflection-layout,
+      .group-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      body { padding: 16px; }
+      .hero,
+      .video-card,
+      .workspace,
+      .reflection-card,
+      .group-card,
+      .result-card { padding: 18px; }
+      .actions,
+      .video-actions { flex-direction: column; }
+      button { width: 100%; }
+      .time-grid,
+      .criteria-grid,
+      .evidence-fields { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Activité 2 · évaluation alignée sur l’item</div>
+        <h1>Repérer les manifestations de stress dans une scène de classe</h1>
+        <p>
+          Visionnez la scène de classe, identifiez un élève en état probable de stress,
+          puis relevez 4 indices verbaux, non verbaux ou contextuels qui soutiennent votre réponse.
+          La page comprend aussi une partie réflexive pour l’enseignant, un retour possible des observateurs,
+          puis une synthèse de groupe sur les points essentiels à retenir.
+        </p>
+        <div class="chips">
+          <span class="chip">Vidéo + formulaire</span>
+          <span class="chip">Pratique autonome</span>
+          <span class="chip">Partie réflexive</span>
+          <span class="chip">Synthèse de groupe</span>
+        </div>
+      </div>
+
+      <aside class="side-panel">
+        <div class="info-box">
+          <strong>Consigne</strong>
+          Visionnez la scène de classe de 5 minutes. Identifiez un élève en état probable de stress et relevez 4 indices verbaux, non verbaux ou contextuels qui soutiennent votre réponse.
+        </div>
+        <div class="score-box">
+          <div class="progress-line">
+            <span>Avancement du dossier</span>
+            <strong id="progressText">0 %</strong>
+          </div>
+          <div class="progress-track" aria-hidden="true">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
+          <p class="meta" style="margin: 12px 0 0;">Les critères attendus : élève identifié de manière plausible, 4 indices observables, au moins 2 catégories mobilisées.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="video-card">
+      <div class="section-head">
+        <div>
+          <h2>Scène de classe</h2>
+          <div class="meta">Importez votre vidéo ou remplacez la source du lecteur dans le code.</div>
+        </div>
+        <div class="pill">Visionnage autonome</div>
+      </div>
+
+      <div class="video-layout">
+        <div class="video-frame">
+          <div class="video-topbar">
+            <div>
+              <strong>Lecteur vidéo</strong>
+              <div class="small">La vidéo n’est pas fournie dans ce modèle. Vous pouvez charger un fichier local pour tester.</div>
+            </div>
+            <div class="pill" id="videoStatus">Aucune vidéo chargée</div>
+          </div>
+
+          <div class="video-wrap">
+            <video id="sceneVideo" controls preload="metadata"></video>
+            <div class="video-placeholder" id="videoPlaceholder">
+              <div>
+                <strong style="display:block; margin-bottom:8px; color: var(--text);">Ajouter une vidéo de classe</strong>
+                Importez un fichier vidéo ou définissez une source dans le code HTML pour la version finale.
+              </div>
+            </div>
+          </div>
+
+          <div class="video-actions">
+            <input id="videoFile" type="file" accept="video/*" />
+            <button type="button" id="rewindBtn">Revenir de 10 sec</button>
+            <button type="button" id="forwardBtn">Avancer de 10 sec</button>
+          </div>
+        </div>
+
+        <aside class="video-side">
+          <div class="mini-card">
+            <strong>Conseil d’observation</strong>
+            Notez ce qui est vu ou entendu avant d’interpréter. Cherchez des indices précis, observables et non redondants.
+          </div>
+          <div class="mini-card">
+            <strong>Repères possibles</strong>
+            Les indices peuvent relever de plusieurs catégories : paroles de l’élève, posture ou gestes, contexte de tâche, pression sociale, urgence temporelle.
+          </div>
+          <div class="time-grid">
+            <div class="time-box">
+              <strong id="currentTimeLabel">0:00</strong>
+              <div class="small">Temps courant</div>
+            </div>
+            <div class="time-box">
+              <strong id="durationLabel">0:00</strong>
+              <div class="small">Durée totale</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <article class="form-card">
+        <div class="section-head">
+          <div>
+            <h2>Réponse de l’enseignant</h2>
+            <div class="meta">Complétez la fiche après le visionnage.</div>
+          </div>
+          <div class="pill">Réponse écrite</div>
+        </div>
+
+        <form id="evaluationForm">
+          <div class="target-card">
+            <label for="studentName">Élève identifié comme étant en état probable de stress</label>
+            <small>Nom, prénom, place dans la classe ou description brève si l’identité n’est pas nommée dans la scène.</small>
+            <input id="studentName" name="studentName" type="text" placeholder="Ex. élève au premier rang à gauche / Lina / élève avec le pull bleu" />
+          </div>
+
+          <div class="field">
+            <label for="studentJustification">Pourquoi cet élève vous semble-t-il identifié de manière plausible ?</label>
+            <small>Expliquez brièvement votre choix avant de détailler les indices.</small>
+            <textarea id="studentJustification" name="studentJustification" placeholder="Ex. J’identifie cet élève car plusieurs indices convergent vers une tension observable..."></textarea>
+            <div class="counter" data-for="studentJustification">0 caractère</div>
+          </div>
+
+          <div>
+            <label>Les 4 indices qui soutiennent votre réponse</label>
+            <div class="meta">Essayez de mobiliser au moins 2 catégories différentes.</div>
+          </div>
+
+          <div class="evidence-grid">
+            <div class="evidence-card">
+              <div class="evidence-head">
+                <div class="evidence-number">1</div>
+                <div class="pill">Indice</div>
+              </div>
+              <div class="evidence-fields">
+                <div class="field">
+                  <label for="cat1">Catégorie</label>
+                  <select id="cat1" name="cat1">
+                    <option value="">Choisir</option>
+                    <option value="verbal">Verbal</option>
+                    <option value="nonverbal">Non verbal</option>
+                    <option value="contextuel">Contextuel</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="obs1">Indice observable</label>
+                  <textarea id="obs1" name="obs1" placeholder="Décrivez ce qui est vu ou entendu."></textarea>
+                  <div class="counter" data-for="obs1">0 caractère</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="evidence-card">
+              <div class="evidence-head">
+                <div class="evidence-number">2</div>
+                <div class="pill">Indice</div>
+              </div>
+              <div class="evidence-fields">
+                <div class="field">
+                  <label for="cat2">Catégorie</label>
+                  <select id="cat2" name="cat2">
+                    <option value="">Choisir</option>
+                    <option value="verbal">Verbal</option>
+                    <option value="nonverbal">Non verbal</option>
+                    <option value="contextuel">Contextuel</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="obs2">Indice observable</label>
+                  <textarea id="obs2" name="obs2" placeholder="Décrivez ce qui est vu ou entendu."></textarea>
+                  <div class="counter" data-for="obs2">0 caractère</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="evidence-card">
+              <div class="evidence-head">
+                <div class="evidence-number">3</div>
+                <div class="pill">Indice</div>
+              </div>
+              <div class="evidence-fields">
+                <div class="field">
+                  <label for="cat3">Catégorie</label>
+                  <select id="cat3" name="cat3">
+                    <option value="">Choisir</option>
+                    <option value="verbal">Verbal</option>
+                    <option value="nonverbal">Non verbal</option>
+                    <option value="contextuel">Contextuel</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="obs3">Indice observable</label>
+                  <textarea id="obs3" name="obs3" placeholder="Décrivez ce qui est vu ou entendu."></textarea>
+                  <div class="counter" data-for="obs3">0 caractère</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="evidence-card">
+              <div class="evidence-head">
+                <div class="evidence-number">4</div>
+                <div class="pill">Indice</div>
+              </div>
+              <div class="evidence-fields">
+                <div class="field">
+                  <label for="cat4">Catégorie</label>
+                  <select id="cat4" name="cat4">
+                    <option value="">Choisir</option>
+                    <option value="verbal">Verbal</option>
+                    <option value="nonverbal">Non verbal</option>
+                    <option value="contextuel">Contextuel</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="obs4">Indice observable</label>
+                  <textarea id="obs4" name="obs4" placeholder="Décrivez ce qui est vu ou entendu."></textarea>
+                  <div class="counter" data-for="obs4">0 caractère</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </article>
+
+      <aside class="aside-card">
+        <div class="section-head">
+          <div>
+            <h2>Auto-vérification</h2>
+            <div class="meta">La fiche se met à jour à mesure que vous la complétez.</div>
+          </div>
+        </div>
+
+        <div class="criteria-list">
+          <div class="criterion" id="criterionStudent">
+            <span class="criterion-dot">•</span>
+            <div class="criterion-text">
+              <strong>Élève identifié de manière plausible</strong>
+              Le choix de l’élève est renseigné et brièvement justifié.
+            </div>
+          </div>
+
+          <div class="criterion" id="criterionFour">
+            <span class="criterion-dot">•</span>
+            <div class="criterion-text">
+              <strong>4 indices donnés</strong>
+              Chaque zone d’indice est complétée.
+            </div>
+          </div>
+
+          <div class="criterion" id="criterionObservable">
+            <span class="criterion-dot">•</span>
+            <div class="criterion-text">
+              <strong>Indices observables</strong>
+              Les formulations décrivent des faits vus ou entendus.
+            </div>
+          </div>
+
+          <div class="criterion" id="criterionCategories">
+            <span class="criterion-dot">•</span>
+            <div class="criterion-text">
+              <strong>Au moins 2 catégories mobilisées</strong>
+              Les indices ne reposent pas tous sur une seule famille d’observation.
+            </div>
+          </div>
+        </div>
+
+        <div class="mini-card">
+          <strong>Conseil</strong>
+          <div class="hint" id="adviceText">Appuyez-vous d’abord sur ce qui est visible ou audible, puis seulement ensuite sur une hypothèse prudente.</div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="reflection-card">
+      <div class="section-head">
+        <div>
+          <h2>Retour réflexif de l’enseignant</h2>
+          <div class="meta">Cette partie permet de relier l’analyse de la scène à l’expérience professionnelle.</div>
+        </div>
+        <div class="pill">Réflexivité</div>
+      </div>
+
+      <div class="reflection-layout">
+        <div class="reflection-panel">
+          <div class="field">
+            <label for="feltMoment">Qu’as-tu ressenti à ce moment-là ?</label>
+            <small>Décrivez votre ressenti en lien avec la scène, l’élève ou la situation.</small>
+            <textarea id="feltMoment" name="feltMoment" placeholder="Ex. J’ai ressenti de la tension, de l’incertitude, un sentiment d’urgence..."></textarea>
+            <div class="counter" data-for="feltMoment">0 caractère</div>
+          </div>
+
+          <div class="field">
+            <label for="teacherReaction">Comment as-tu réagi ?</label>
+            <small>Décrivez votre réponse verbale, non verbale ou votre prise de décision.</small>
+            <textarea id="teacherReaction" name="teacherReaction" placeholder="Ex. J’ai tenté de rassurer / j’ai reformulé / j’ai maintenu la consigne... "></textarea>
+            <div class="counter" data-for="teacherReaction">0 caractère</div>
+          </div>
+
+          <div class="field">
+            <label for="teacherReview">Que penses-tu de ton retour ?</label>
+            <small>Analysez votre réponse : utile, insuffisante, à ajuster, à consolider.</small>
+            <textarea id="teacherReview" name="teacherReview" placeholder="Ex. Avec du recul, mon retour a peut-être ajouté de la pression / a permis de contenir la situation... "></textarea>
+            <div class="counter" data-for="teacherReview">0 caractère</div>
+          </div>
+        </div>
+
+        <aside class="reflection-panel">
+          <div class="mini-card">
+            <strong>Intérêt pédagogique</strong>
+            Relier le repérage du stress à votre propre réaction permet de passer de l’observation à l’ajustement professionnel.
+          </div>
+          <div class="mini-card">
+            <strong>Repère utile</strong>
+            Un bon retour réflexif reste descriptif, honnête et nuancé : ce qui a aidé, ce qui a freiné, ce qui pourrait être retravaillé.
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="reflection-card">
+      <div class="section-head">
+        <div>
+          <h2>Retour des observateurs</h2>
+          <div class="meta">À utiliser en binôme, en trio ou lors d’un retour collectif.</div>
+        </div>
+        <div class="pill">Observateurs</div>
+      </div>
+
+      <div class="reflection-layout">
+        <div class="reflection-panel">
+          <div class="observer-box">
+            <label for="observerPositive">Qu’est-ce qui est positif ?</label>
+            <small>Relevez les points qui vont dans le sens d’un repérage juste ou d’une réaction adaptée.</small>
+            <textarea id="observerPositive" name="observerPositive" placeholder="Ex. L’enseignant a remarqué un changement de posture / a laissé un temps de parole... "></textarea>
+            <div class="counter" data-for="observerPositive">0 caractère</div>
+          </div>
+
+          <div class="observer-box">
+            <label for="observerRework">Qu’est-ce qui est à reprendre ?</label>
+            <small>Identifiez ce qui pourrait être amélioré dans l’analyse ou dans la réponse apportée.</small>
+            <textarea id="observerRework" name="observerRework" placeholder="Ex. Certains indices restent trop interprétatifs / la réponse pourrait être plus contenante... "></textarea>
+            <div class="counter" data-for="observerRework">0 caractère</div>
+          </div>
+
+          <div class="observer-box">
+            <label for="observerAnticipate">Qu’est-ce qui pourrait être anticipé pour les prochaines fois ?</label>
+            <small>Formulez des pistes concrètes de prévention, de repérage ou d’ajustement.</small>
+            <textarea id="observerAnticipate" name="observerAnticipate" placeholder="Ex. Prévoir un temps de préparation, expliciter la consigne plus tôt, repérer les signes avant le passage oral... "></textarea>
+            <div class="counter" data-for="observerAnticipate">0 caractère</div>
+          </div>
+        </div>
+
+        <aside class="reflection-panel">
+          <div class="mini-card">
+            <strong>Repère de formulation</strong>
+            Le retour des observateurs gagne en qualité lorsqu’il reste centré sur des faits, puis sur des pistes d’amélioration concrètes.
+          </div>
+          <div class="mini-card">
+            <strong>Équilibre attendu</strong>
+            Nommer ce qui est positif, ce qui reste à reprendre et ce qui peut être anticipé aide à produire un feedback constructif et exploitable.
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="group-card">
+      <div class="section-head">
+        <div>
+          <h2>Fiche de groupe — Points importants pour repérer le stress chez les élèves</h2>
+          <div class="meta">À compléter en groupe pour conclure l’activité ou le module.</div>
+        </div>
+        <div class="pill">Synthèse collective</div>
+      </div>
+
+      <div class="group-layout">
+        <div class="group-panel">
+          <div class="group-box">
+            <label for="groupSignals">Quels signes devons-nous particulièrement surveiller ?</label>
+            <small>Listez les manifestations verbales, non verbales et contextuelles jugées importantes.</small>
+            <textarea id="groupSignals" name="groupSignals" placeholder="Ex. voix qui tremble, évitement, demande de repousser une tâche, accélération du rythme, isolement... "></textarea>
+            <div class="counter" data-for="groupSignals">0 caractère</div>
+          </div>
+
+          <div class="group-box">
+            <label for="groupMistakes">Quelles erreurs d’interprétation ou de réponse voulons-nous éviter ?</label>
+            <small>Notez les pièges fréquents dans le repérage ou dans les réactions enseignantes.</small>
+            <textarea id="groupMistakes" name="groupMistakes" placeholder="Ex. conclure trop vite, confondre agitation et opposition, ajouter de la pression sans s’en rendre compte... "></textarea>
+            <div class="counter" data-for="groupMistakes">0 caractère</div>
+          </div>
+
+          <div class="group-box">
+            <label for="groupPractices">Quelles pratiques voulons-nous retenir pour mieux repérer et accompagner ?</label>
+            <small>Formalisez les gestes professionnels à conserver ou développer.</small>
+            <textarea id="groupPractices" name="groupPractices" placeholder="Ex. observer avant d’interpréter, croiser plusieurs indices, proposer une reformulation, ajuster l’exposition... "></textarea>
+            <div class="counter" data-for="groupPractices">0 caractère</div>
+          </div>
+        </div>
+
+        <aside class="group-panel">
+          <div class="summary-box">
+            <label for="groupCommitment">Notre phrase-repère commune</label>
+            <small>Formulez en une phrase ce que le groupe souhaite garder comme principe central.</small>
+            <textarea id="groupCommitment" name="groupCommitment" placeholder="Ex. Nous croisons toujours plusieurs indices observables avant d’interpréter un état de stress. "></textarea>
+            <div class="counter" data-for="groupCommitment">0 caractère</div>
+          </div>
+
+          <div class="mini-card">
+            <strong>Usage possible</strong>
+            Cette fiche peut être reprise en présentiel, affichée en salle des maîtres, ou utilisée comme base de rappel en fin de module.
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="result-card">
+      <div class="result-title">
+        <div>
+          <h2>État du dossier</h2>
+          <div class="meta">Vérification simple avant enregistrement ou export.</div>
+        </div>
+        <div class="badge" id="resultBadge">En cours</div>
+      </div>
+
+      <div class="feedback-list" id="feedbackList">
+        <div class="feedback-item"><strong>Évaluation.</strong> Renseignez l’élève ciblé et les 4 indices.</div>
+        <div class="feedback-item"><strong>Réflexivité.</strong> Complétez les questions de retour personnel si vous souhaitez garder une trace d’analyse professionnelle.</div>
+        <div class="feedback-item"><strong>Collectif.</strong> Utilisez les sections observateurs et groupe lorsque l’activité est reprise en présentiel.</div>
+      </div>
+
+      <div class="actions">
+        <button class="primary" id="saveBtn" type="button">Enregistrer</button>
+        <button id="exportBtn" type="button">Exporter en .txt</button>
+        <button class="secondary" id="printBtn" type="button">Imprimer / PDF</button>
+        <button id="resetBtn" type="button">Réinitialiser</button>
+      </div>
+      <div class="note" id="savedMessage"></div>
+    </section>
+  </main>
+
+  <script>
+    const storageKey = 'evaluation_stress_video_reflexif_v1';
+    const video = document.getElementById('sceneVideo');
+    const videoFile = document.getElementById('videoFile');
+    const videoPlaceholder = document.getElementById('videoPlaceholder');
+    const videoStatus = document.getElementById('videoStatus');
+    const currentTimeLabel = document.getElementById('currentTimeLabel');
+    const durationLabel = document.getElementById('durationLabel');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const adviceText = document.getElementById('adviceText');
+    const resultBadge = document.getElementById('resultBadge');
+    const savedMessage = document.getElementById('savedMessage');
+
+    const fields = Array.from(document.querySelectorAll('input[type="text"], textarea, select'));
+
+    const criterionStudent = document.getElementById('criterionStudent');
+    const criterionFour = document.getElementById('criterionFour');
+    const criterionObservable = document.getElementById('criterionObservable');
+    const criterionCategories = document.getElementById('criterionCategories');
+
+    function pluralize(count) {
+      return count > 1 ? 'caractères' : 'caractère';
+    }
+
+    function updateCounters() {
+      document.querySelectorAll('.counter').forEach(counter => {
+        const id = counter.dataset.for;
+        const el = document.getElementById(id);
+        const count = (el.value || '').trim().length;
+        counter.textContent = `${count} ${pluralize(count)}`;
+      });
+    }
+
+    function formatTime(seconds) {
+      if (!Number.isFinite(seconds)) return '0:00';
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function setCriterionState(node, state) {
+      node.classList.remove('done', 'warn');
+      if (state) node.classList.add(state);
+    }
+
+    function getData() {
+      const data = {};
+      fields.forEach(field => {
+        data[field.id] = field.value;
+      });
+      return data;
+    }
+
+    function setData(data) {
+      fields.forEach(field => {
+        if (Object.prototype.hasOwnProperty.call(data, field.id)) {
+          field.value = data[field.id];
+        }
+      });
+    }
+
+    function saveLocal(showMessage = false) {
+      localStorage.setItem(storageKey, JSON.stringify(getData()));
+      if (showMessage) {
+        savedMessage.textContent = 'Dossier enregistré localement.';
+        clearTimeout(saveLocal._timer);
+        saveLocal._timer = setTimeout(() => { savedMessage.textContent = ''; }, 2200);
+      }
+    }
+
+    function loadLocal() {
+      const raw = localStorage.getItem(storageKey);
+      if (!raw) return;
+      try {
+        setData(JSON.parse(raw));
+      } catch (e) {
+        console.warn('Impossible de relire les données enregistrées.');
+      }
+    }
+
+    function looksObservable(text) {
+      const value = (text || '').trim().toLowerCase();
+      if (!value) return false;
+      const vaguePatterns = [
+        /il est stressé/,
+        /elle est stressée/,
+        /il est angoissé/,
+        /elle est anxieuse/,
+        /on voit qu['’]il ne va pas/,
+        /je pense qu['’]il panique/
+      ];
+      return value.length >= 8 && !vaguePatterns.some(p => p.test(value));
+    }
+
+    function validateForm() {
+      const d = getData();
+      const studentOk = d.studentName?.trim() && d.studentJustification?.trim();
+      const observations = [d.obs1, d.obs2, d.obs3, d.obs4].map(v => (v || '').trim());
+      const categories = [d.cat1, d.cat2, d.cat3, d.cat4].map(v => (v || '').trim()).filter(Boolean);
+      const fourOk = observations.every(Boolean) && categories.length === 4;
+      const observableOk = observations.every(looksObservable);
+      const categoryOk = new Set(categories).size >= 2;
+
+      setCriterionState(criterionStudent, studentOk ? 'done' : '');
+      setCriterionState(criterionFour, fourOk ? 'done' : '');
+      setCriterionState(criterionObservable, observableOk ? 'done' : observations.some(Boolean) ? 'warn' : '');
+      setCriterionState(criterionCategories, categoryOk ? 'done' : categories.length > 0 ? 'warn' : '');
+
+      const requiredIds = [
+        'studentName','studentJustification','cat1','obs1','cat2','obs2','cat3','obs3','cat4','obs4',
+        'feltMoment','teacherReaction','teacherReview','observerPositive','observerRework','observerAnticipate',
+        'groupSignals','groupMistakes','groupPractices','groupCommitment'
+      ];
+      const filled = requiredIds.filter(id => (d[id] || '').trim()).length;
+      const percent = Math.round((filled / requiredIds.length) * 100);
+      progressBar.style.width = `${percent}%`;
+      progressText.textContent = `${percent} %`;
+
+      if (!studentOk) {
+        adviceText.textContent = 'Commencez par identifier l’élève choisi et justifiez brièvement ce choix.';
+      } else if (!fourOk) {
+        adviceText.textContent = 'Complétez les 4 indices avec leur catégorie respective.';
+      } else if (!observableOk) {
+        adviceText.textContent = 'Essayez d’écrire ce qui a été vu ou entendu, plutôt qu’une interprétation globale.';
+      } else if (!categoryOk) {
+        adviceText.textContent = 'Mobilisez au moins 2 catégories différentes pour renforcer la plausibilité de votre analyse.';
+      } else {
+        adviceText.textContent = 'La réponse principale est complète. Vous pouvez approfondir la partie réflexive et la synthèse de groupe.';
+      }
+
+      const coreReady = studentOk && fourOk && observableOk && categoryOk;
+      resultBadge.className = `badge ${coreReady ? 'success' : 'warning'}`;
+      resultBadge.textContent = coreReady ? 'Réponse principale prête' : 'À compléter';
+    }
+
+    function exportTxt() {
+      const d = getData();
+      const content = [
+        'ÉVALUATION — REPÉRAGE DU STRESS CHEZ LES ÉLÈVES',
+        '',
+        'ÉLÈVE IDENTIFIÉ',
+        d.studentName || '',
+        '',
+        'JUSTIFICATION',
+        d.studentJustification || '',
+        '',
+        'INDICES',
+        `1. [${d.cat1 || ''}] ${d.obs1 || ''}`,
+        `2. [${d.cat2 || ''}] ${d.obs2 || ''}`,
+        `3. [${d.cat3 || ''}] ${d.obs3 || ''}`,
+        `4. [${d.cat4 || ''}] ${d.obs4 || ''}`,
+        '',
+        'RETOUR RÉFLEXIF DE L’ENSEIGNANT',
+        `Ressenti : ${d.feltMoment || ''}`,
+        `Réaction : ${d.teacherReaction || ''}`,
+        `Analyse du retour : ${d.teacherReview || ''}`,
+        '',
+        'RETOUR DES OBSERVATEURS',
+        `Points positifs : ${d.observerPositive || ''}`,
+        `À reprendre : ${d.observerRework || ''}`,
+        `À anticiper : ${d.observerAnticipate || ''}`,
+        '',
+        'SYNTHÈSE DE GROUPE',
+        `Signes importants : ${d.groupSignals || ''}`,
+        `Erreurs à éviter : ${d.groupMistakes || ''}`,
+        `Pratiques à retenir : ${d.groupPractices || ''}`,
+        `Phrase-repère commune : ${d.groupCommitment || ''}`
+      ].join('\n');
+
+      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'evaluation_reperage_stress.txt';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      savedMessage.textContent = 'Export .txt téléchargé.';
+      setTimeout(() => { savedMessage.textContent = ''; }, 2200);
+    }
+
+    fields.forEach(field => {
+      field.addEventListener('input', () => {
+        updateCounters();
+        validateForm();
+        saveLocal(false);
+      });
+      field.addEventListener('change', () => {
+        updateCounters();
+        validateForm();
+        saveLocal(false);
+      });
+    });
+
+    videoFile.addEventListener('change', (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const url = URL.createObjectURL(file);
+      video.src = url;
+      videoStatus.textContent = file.name;
+      videoPlaceholder.classList.add('hidden');
+    });
+
+    video.addEventListener('loadedmetadata', () => {
+      durationLabel.textContent = formatTime(video.duration);
+      videoPlaceholder.classList.add('hidden');
+      videoStatus.textContent = videoStatus.textContent === 'Aucune vidéo chargée' ? 'Vidéo prête' : videoStatus.textContent;
+    });
+
+    video.addEventListener('timeupdate', () => {
+      currentTimeLabel.textContent = formatTime(video.currentTime);
+    });
+
+    document.getElementById('rewindBtn').addEventListener('click', () => {
+      video.currentTime = Math.max(0, video.currentTime - 10);
+    });
+
+    document.getElementById('forwardBtn').addEventListener('click', () => {
+      if (!Number.isFinite(video.duration)) return;
+      video.currentTime = Math.min(video.duration, video.currentTime + 10);
+    });
+
+    document.getElementById('saveBtn').addEventListener('click', () => saveLocal(true));
+    document.getElementById('exportBtn').addEventListener('click', exportTxt);
+    document.getElementById('printBtn').addEventListener('click', () => window.print());
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      if (!confirm('Réinitialiser tout le dossier ?')) return;
+      fields.forEach(field => { field.value = ''; });
+      localStorage.removeItem(storageKey);
+      updateCounters();
+      validateForm();
+      savedMessage.textContent = 'Dossier réinitialisé.';
+      setTimeout(() => { savedMessage.textContent = ''; }, 2200);
+    });
+
+    loadLocal();
+    updateCounters();
+    validateForm();
+  </script>
+</body>
+</html>
+</body>
+</html>
