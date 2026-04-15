@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plateforme étudiante | Ressources théoriques</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="resources-theory">
+  <header class="topbar">
+    <a class="brand" href="accueil.html" aria-label="Retour à l'accueil">
+      <span class="brand-mark">AD</span>
+      <span class="brand-copy">
+        <strong>Plateforme étudiante</strong>
+        <small>Ressources théoriques</small>
+      </span>
+    </a>
+
+    <nav class="topnav" aria-label="Navigation principale">
+      <a class="topnav-link" href="index.html">Parcours</a>
+      <a class="topnav-link" href="interactif.html">Interactif</a>
+      <a class="topnav-link" href="equipe.html">Équipe</a>
+      <a class="topnav-link is-active" href="ressources-theoriques.html">Ressources théoriques</a>
+      <a class="topnav-link" href="ressources-classe.html">Ressources pour ma classe</a>
+      <a class="topnav-link" href="forum.html">Forum</a>
+    </nav>
+
+    <section class="topbar-progress" aria-label="Progression globale">
+      <div class="progress-meta">
+        <span>Progression globale</span>
+        <strong id="globalProgressLabel">0 %</strong>
+      </div>
+      <div class="progress-track" aria-hidden="true">
+        <div class="progress-fill" id="globalProgressBar"></div>
+      </div>
+    </section>
+  </header>
+
+  <main class="page-shell">
+    <section class="panel dashboard compact-panel">
+      <div class="dashboard-row">
+        <div>
+          <h1>Ressources théoriques</h1>
+        </div>
+      </div>
+    </section>
+
+    <section class="resource-grid" id="resourceTheoryGrid" aria-label="Ressources théoriques par axe"></section>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
